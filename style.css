@@ -1,4 +1,9 @@
 body {
-    width: 40%;
-    column-count: 3;
+    width: 60%;
+}
+
+#top-right-buttons {
+    position: absolute;
+    top: 5px;
+    right: 5px;
 }
