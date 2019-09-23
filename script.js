@@ -1,5 +1,11 @@
-//Sidebar JQuery
 $(document).ready(function () {
+    //logout function
+    $('#logout').on('click', function () {
+        // auth.signOut();
+        alert("This will allow the user to logout");
+    });
+
+    //Sidebar JQuery
     $("#sidebar").mCustomScrollbar({
         theme: "minimal"
     });
