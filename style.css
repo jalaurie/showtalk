@@ -2,8 +2,11 @@
 @media screen and (min-width: 600px) {
     body {
         margin: 1% 15% 0% 15%;
-        min-width: 375px;
     }
+}
+
+body {
+    min-width: 375px;
 }
 
 h1 {
