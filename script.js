@@ -5,11 +5,16 @@ $(document).ready(function () {
         $('#logout').html('<i class="fas fa-sign-out-alt"></i>');
     }
 
-
     //logout function
     $('#logout').on('click', function () {
         // auth.signOut();
         alert("This will allow the user to logout");
+    });
+
+    //follow a user function
+    $('#follow').on('click', function() {
+        //add following relationship to database
+        alert("This will allow a user to follow another user");
     });
 
     //Sidebar JQuery
