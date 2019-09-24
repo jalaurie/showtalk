@@ -17,6 +17,12 @@ $(document).ready(function () {
         alert("This will allow a user to follow another user");
     });
 
+    //search for a friend function
+    $('#searchFriends').on('click', function() {
+        //query the database for that username
+        alert("This will allow a user to search for other users by username");
+    });
+
     //Sidebar JQuery
     $("#sidebar").mCustomScrollbar({
         theme: "minimal"

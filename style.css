@@ -14,6 +14,7 @@
 /* General Styling */
 body {
     min-width: 375px;
+    padding: 5px;
 }
 h1 {
     text-align: center;
@@ -42,6 +43,21 @@ h1 {
 }
 #followButtonDiv {
     text-align: center;
+}
+
+/* Find Friends Styling */
+#search {
+    text-align: center;
+}
+#searchForm {
+    display: flex;
+    justify-content: center;
+}
+.form-group {
+    margin-bottom: 0px;
+}
+#searchFriends {
+    margin-left: 10px;
 }
 
 /* Header Styling */
