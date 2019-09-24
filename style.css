@@ -21,6 +21,9 @@ h1 {
 }
 
 /* Home Page Styling */
+.card {
+    margin-bottom: 10px;
+}
 .reel {
     border-top: 10px black solid;
     border-left: 60px black solid;
