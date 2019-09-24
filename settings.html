@@ -60,8 +60,21 @@
                         </button>
                     </div>
                 </nav>
-                <h1>Show Talk</h1>
                 <h2>Settings</h2>
+                <p>Fill out one or more fields and press submit to change.</p>
+                <form id="settingsForm">
+                    <div class="form-group"> <!--Remember to whitelist characters allowed so no XSS-->
+                        <p>Email: </p><input class="form-control" type="email" id="setemail" placeholder="jalaurie@go.olemiss.edu">
+                    </div>
+                    <div class="form-group"> <!--Remember to whitelist characters allowed so no XSS-->
+                        <p>Username: </p><input class="form-control" type="text" id="setuname" placeholder="jalaurie">
+                    </div>
+                    <div class="form-group"> <!--Remember to whitelist characters allowed so no XSS-->
+                        <p>Display Name: </p><input class="form-control" type="text" id="setdname" placeholder="Jennifer Lauriello">
+                    </div>
+                    <button type="submit" class="btn btn-info" id="submitSettings">Submit Changes</button>
+                </form>
+                <br><p>Forgot Password? Send a reset link</p>
             </div>
         </div>
         

@@ -63,12 +63,18 @@
                 <div id="search">
                     <h3>Search Friends by Username</h2>
                     <form id="searchForm">
-                        <div class="form-group">
+                        <div class="form-group" id="friends-form-group"> <!--Remember to whitelist characters allowed so no XSS-->
                             <input class="form-control" type="text" id="uname" placeholder="user123">
                         </div>
                         <button type="submit" class="btn btn-info" id="searchFriends">Submit</button>
                     </form>
                 </div>
+                <h4>Results:</h4>
+                <p>Click a user's name to visit their profile.</p>
+                <ul id="friendResults">
+                    <li>user123</li>
+                    <li>user1234</li>
+                </ul>
             </div>
         </div>
         

@@ -53,11 +53,14 @@ h1 {
     display: flex;
     justify-content: center;
 }
-.form-group {
+#friends-form-group {
     margin-bottom: 0px;
 }
 #searchFriends {
     margin-left: 10px;
+}
+#friendResults {
+    list-style: none;
 }
 
 /* Header Styling */
