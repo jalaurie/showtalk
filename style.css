@@ -13,6 +13,10 @@ h1 {
     text-align: center;
 }
 
+#profName {
+    text-align: center;
+}
+
 .reel {
     border-top: 10px black solid;
     border-left: 60px black solid;
@@ -37,16 +41,13 @@ a:focus {
     margin-bottom: 40px;
     box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
 }
-.navbar>.container-fluid {
-    min-width: 375px;
-}
 
 /* sidebar style */
 #sidebar {
     width: 250px;
     position: fixed;
     top: 0;
-    left: -250px;
+    left: -255px;
     height: 100vh;
     z-index: 999;
     background: #7386D5;

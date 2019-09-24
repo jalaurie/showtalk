@@ -1,4 +1,11 @@
 $(document).ready(function () {
+    //change topbar buttons if display is too scrunched
+    if ($(window).width() < 600) {
+        $('#sidebarCollapse').html('<i class="fas fa-align-left"></i>');
+        $('#logout').html('<i class="fas fa-sign-out-alt"></i>');
+    }
+
+
     //logout function
     $('#logout').on('click', function () {
         // auth.signOut();
