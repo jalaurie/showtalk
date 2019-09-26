@@ -5,7 +5,7 @@
         margin: 1% 15% 0% 15%;
     }
     /* Change spacing of carousel cards */
-    #carouselCardBody {
+    .carouselCardBody {
         padding-left: 100px !important;
         padding-right: 100px !important;
     }
@@ -40,7 +40,7 @@ h1 {
 .carousel-control-prev-icon {
     filter: invert(100%);
 }
-#carouselCardBody {
+.carouselCardBody {
     padding-left: 50px;
     padding-right: 50px;
 }
