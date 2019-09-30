@@ -4,6 +4,10 @@
     body {
         margin: 1% 15% 0% 15%;
     }
+    /* Change width of login card */
+    .loginWrapper {
+        margin: 5% 20%;
+    }
     /* Change spacing of carousel cards */
     .carouselCardBody {
         padding-left: 100px !important;

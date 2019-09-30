@@ -1,42 +1,72 @@
-$(document).ready(function () {
-    //change topbar buttons if display is too scrunched
-    if ($(window).width() < 600) {
-        $('#sidebarCollapse').html('<i class="fas fa-align-left"></i>');
-        $('#logout').html('<i class="fas fa-sign-out-alt"></i>');
-    }
+//configure Firebase
+var firebaseConfig = {
+    apiKey: "AIzaSyCJrkCYPsB0D28FttkSqjuEM1p9bhToLlw",
+    authDomain: "show-talk.firebaseapp.com",
+    databaseURL: "https://show-talk.firebaseio.com",
+    projectId: "show-talk",
+    storageBucket: "show-talk.appspot.com",
+    messagingSenderId: "310521785544",
+    appId: "1:310521785544:web:cac5de72403451b89349fd",
+    measurementId: "G-QTXGWJYVWH"
+};
+//initialize Firebase
+firebase.initializeApp(firebaseConfig);
 
-    //logout function
-    $('#logout').on('click', function () {
-        // auth.signOut();
-        alert("This will allow the user to logout");
-    });
+//initialize Firebase references
+let db = firebase.firestore();
+let storageRef = firebase.storage().ref();
+let auth = firebase.auth();
 
-    //follow a user function
-    $('#follow').on('click', function() {
-        //add following relationship to database
-        alert("This will allow a user to follow another user");
-    });
+//global userID variable
+var uid;
 
-    //search for a friend function
-    $('#searchFriends').on('click', function() {
-        //query the database for that username
-        alert("This will allow a user to search for other users by username");
+//ensures login state is true on any inside page
+async function checkUser() {
+    auth.onAuthStateChanged(async function(user) {
+        if (user) { // User is signed in.
+            uid = user.uid;
+        } else { // User is not signed in.
+            window.alert("You are signed out!");
+            window.location.href = 'index.html';
+        }
     });
+}
 
-    //Sidebar JQuery
-    $("#sidebar").mCustomScrollbar({
-        theme: "minimal"
-    });
-    
-    $('#dismiss, .overlay').on('click', function () {
-        $('#sidebar').removeClass('active');
-        $('.overlay').removeClass('active');
-    });
+//change topbar buttons if display is too scrunched
+if ($(window).width() < 600) {
+    $('#sidebarCollapse').html('<i class="fas fa-align-left"></i>');
+    $('#logout').html('<i class="fas fa-sign-out-alt"></i>');
+}
 
-    $('#sidebarCollapse').on('click', function () {
-        $('#sidebar').addClass('active');
-        $('.overlay').addClass('active');
-        $('.collapse.in').toggleClass('in');
-        $('a[aria-expanded=true]').attr('aria-expanded', 'false');
-    });
+//logout function
+$('#logout').on('click', function () {
+    // auth.signOut();
+    alert("This will allow the user to logout");
+});
+
+//follow a user function
+$('#follow').on('click', function() {
+    //add following relationship to database
+    alert("This will allow a user to follow another user");
+});
+
+//search for a friend function
+$('#searchFriends').on('click', function() {
+    //query the database for that username
+    alert("This will allow a user to search for other users by username");
+});
+
+//sidebar functions
+$("#sidebar").mCustomScrollbar({
+    theme: "minimal"
+});
+$('#dismiss, .overlay').on('click', function () {
+    $('#sidebar').removeClass('active');
+    $('.overlay').removeClass('active');
+});
+$('#sidebarCollapse').on('click', function () {
+    $('#sidebar').addClass('active');
+    $('.overlay').addClass('active');
+    $('.collapse.in').toggleClass('in');
+    $('a[aria-expanded=true]').attr('aria-expanded', 'false');
 });

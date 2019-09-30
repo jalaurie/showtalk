@@ -3,11 +3,13 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        
         <!--Import Bootstrap-->
-        
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-        <link rel="stylesheet" href="style.css">
         
+        <!-- Custom CSS -->
+        <link rel="stylesheet" href="style.css">
+
         <!-- Scrollbar Custom CSS -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
 
@@ -30,16 +32,15 @@
                 </div>
         
                 <ul class="list-unstyled components">
-                    <li>
+                    <li class="active">
                         <a href="index.html">Home</a>
                     </li>
                     <li>
                         <a href="profile.html">Profile</a>
                     </li>
-                    <li class="active">
+                    <li>
                         <a href="friends.html">Find Friends</a>
                     </li>
-                    
                     <li>
                         <a href="settings.html">Account Settings</a>
                     </li>
@@ -53,31 +54,42 @@
                             <i class="fas fa-align-left"></i>
                             <span>Menu</span>
                         </button>
-                        <h1>Show Talk</h1>
+                    <h1>Show Talk</h1>
                         <button type="button" id="logout" class="btn btn-info">
                             <i class="fas fa-sign-out-alt"></i>
                             <span>Log Out</span>
                         </button>
                     </div>
                 </nav>
-                <div id="search">
-                    <h3>Search Friends by Username</h3>
-                    <form id="searchForm">
-                        <div class="form-group" id="friends-form-group"> <!--Remember to whitelist characters allowed so no XSS-->
-                            <input class="form-control" type="text" id="uname" placeholder="user123">
+    
+                <div class="reel">
+                    <h4>Status Updates:</h4>
+                    <div class="card"> <!--Link to user profile onclick-->
+                        <div class="card-body">
+                            <h5 class="card-title">Jennifer Lauriello @jalaurie</h5>
+                            <p class="card-text">I just started watching Veronica Mars. It's so good!</p>
+                            <button type="button" class="btn btn-info">
+                                <i class="fas fa-comment"></i>
+                                <span>Comment</span>
+                            </button>
                         </div>
-                        <button type="submit" class="btn btn-info" id="searchFriends">Submit</button>
-                    </form>
+                    </div>
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Ally Brockwell @akbrockw</h5>
+                            <p class="card-text">Anybody have any good show suggestions?</p>
+                            <button type="button" class="btn btn-info">
+                                <i class="fas fa-comment"></i>
+                                <span>Comment</span>
+                            </button>
+                        </div>
+                    </div>
+                    <br>
+                    <div style="text-align:center;">You've reached the bottom.</div>
                 </div>
-                <h4>Results:</h4>
-                <p>Click a user's name to visit their profile.</p>
-                <ul id="friendResults">
-                    <li>user123</li>
-                    <li>user1234</li>
-                </ul>
             </div>
         </div>
-        
+
         <!--Bootstrap Required Scripts-->
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
