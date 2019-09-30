@@ -72,5 +72,59 @@
         
         <!-- Custom Script -->
         <script src="script.js"></script>
+        
+        <!-- Log In / Sign Up Script -->
+        <script>
+            //create constants for form buttons
+            const btnLogin = document.getElementById('btnLogin');
+            const btnSignUp = document.getElementById('btnSignUp');
+            const email = document.getElementById('email');
+            const pass = document.getElementById('pass');
+
+            //attempt to log the user in
+            btnLogin.addEventListener('click', e => {
+                let promise = auth.signInWithEmailAndPassword(email.value, pass.value);
+                promise.catch(function(err) {
+                    console.log(err.message);
+                    document.getElementById('message').innerHTML = "<p>" + err.message + "</p>";
+                });
+            });
+
+            //attempt to create an account
+            btnSignUp.addEventListener('click', e => {
+                let promise = auth.createUserWithEmailAndPassword(email.value, pass.value);
+                promise.then(function() {
+                    document.getElementById('message').innerHTML = "<p>Account creation successful! Please sign in.</p>";
+                });
+                promise.catch(function(err) {
+                    console.log(err.message);
+                    document.getElementById('message').innerHTML = "<p>" + err.message + "</p>";
+                });
+            });
+
+            //redirect user to their homepage
+            auth.onAuthStateChanged(function(user) {
+                if (user) { //user is signed in
+                    var name = user.email.substring(0, user.email.indexOf('@'));
+                    db.collection('user').doc(user.uid).get().then(async function(doc) {
+                        if(!doc.exists) { //document doesn't exist--create one
+                            await db.collection('user').doc(user.uid).set({
+                                email: user.email,
+                                username: name,
+                                displayname: name
+                            }).then(function() {
+                                console.log("Document created!");
+                            }).catch(function(error) {
+                                console.error("Error writing document: ", error);
+                            });
+                        }
+                    }).then(function() { //redirect to the home page
+                        window.location.href = "home.html";
+                    }).catch(function(error) {
+                        console.log("Error getting document: ", error);
+                    });
+                }
+            });
+        </script>
     </body>
 </html>
