@@ -32,6 +32,18 @@ async function checkUser() {
     });
 }
 
+//forgot password function
+function forgot() {
+    var email = document.getElementById('forgotemail').value;
+    auth.sendPasswordResetEmail(email).then(function() {
+        window.alert("Please check your email for the password reset link.");
+        window.location.href = 'index.html';
+    }).catch(function(error) {
+        window.alert("Whoops! Something went wrong.");
+        console.log(error.code + ": " + error.message);
+    });
+}
+
 //change topbar buttons if display is too scrunched
 if ($(window).width() < 600) {
     $('#sidebarCollapse').html('<i class="fas fa-align-left"></i>');
@@ -40,8 +52,7 @@ if ($(window).width() < 600) {
 
 //logout function
 $('#logout').on('click', function () {
-    // auth.signOut();
-    alert("This will allow the user to logout");
+    auth.signOut();
 });
 
 //follow a user function
