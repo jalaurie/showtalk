@@ -70,6 +70,11 @@ h1 {
     list-style: none;
 }
 
+/* Settings Styling */
+.normal-link {
+    text-decoration: underline;
+}
+
 /* Header Styling */
 .navbar {
     padding: 15px 10px;

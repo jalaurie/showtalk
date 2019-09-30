@@ -37,9 +37,9 @@ function forgot() {
     var email = document.getElementById('forgotemail').value;
     auth.sendPasswordResetEmail(email).then(function() {
         window.alert("Please check your email for the password reset link.");
-        window.location.href = 'index.html';
+        window.history.back();
     }).catch(function(error) {
-        window.alert("Whoops! Something went wrong.");
+        window.alert("Whoops! Something went wrong. Please check that you entered the correct email.");
         console.log(error.code + ": " + error.message);
     });
 }
