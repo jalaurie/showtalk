@@ -21,10 +21,34 @@ let auth = firebase.auth();
 var uid;
 
 //ensures login state is true on any inside page
-async function checkUser() {
-    auth.onAuthStateChanged(async function(user) {
+function checkUser() {
+    auth.onAuthStateChanged(function(user) {
         if (user) { // User is signed in.
             uid = user.uid;
+        } else { // User is not signed in.
+            window.alert("You are signed out!");
+            window.location.href = 'index.html';
+        }
+    });
+}
+
+//check login state and load profile picture
+function checkUserForProfile() {
+    auth.onAuthStateChanged(function(user) {
+        if (user) { // User is signed in.
+            uid = user.uid;
+
+            //get profile picture if it exists
+            var picsRef = storageRef.child('profiles');
+            var curRef = picsRef.child(String(uid));
+            console.log(uid);
+
+            curRef.getDownloadURL().then(function(url) {
+                document.getElementById('profPic').src = url;
+            }).catch(function(error) { //picture doesn't exist
+                console.log(error);
+            });
+
         } else { // User is not signed in.
             window.alert("You are signed out!");
             window.location.href = 'index.html';
