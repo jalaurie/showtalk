@@ -63,12 +63,12 @@
 
                 <div id="settingsContent">
                     <h2>Settings</h2>
-                        
                     <p>Forgot Password? <a class="normal-link" href="forgot.html">Send a reset link</a></p>
                     <h3>Change Profile Picture</h3>
                     <label for="profPic">Upload an image</label>
                     <input type="file" class="form-control-file" id="profPic" accept=".jpg">
                     <br><button class="btn btn-info" id="uploadPic">Use This Photo</button>
+                    <div class="hidden" id="uploadMsg">Upload Success!</div>
                     <br><br>
                     <h3>Change Account Information</h3>
                     <p>Fill out one or more fields and press submit to change.</p>
@@ -109,12 +109,25 @@
         <!-- Image Upload Script -->
         <script>
             var picUpload = document.getElementById("profPic");
-            picUpload.onchange = function() {
-                if(this.files[0].size > 3*(1048576)){ //1MB in Bytes is 1,048,576
+            var picsRef = storageRef.child('profiles');
+            
+            $('#uploadPic').on('click', function () {
+                var prof = picUpload.files[0];
+                if(prof.size > 3*1048576) { //1MB in Bytes is 1,048,576
                     alert("This file is too large. Please upload a file smaller than 3MB.");
-                    this.value = "";
-                };
-            };
+                    picUpload.value = "";
+                }
+                else {
+                    var filename = uid; //save user's profile picture as their userid
+                                        //so each user only has one uploaded
+                    var curRef = picsRef.child(filename);
+                    curRef.put(prof).then(function(snapshot) {
+                        console.log('Uploaded to Firebase');
+                        picUpload.value = "";
+                        $('#uploadMsg').removeClass('hidden');
+                    });
+                }
+            });
         </script>
     </body>
 </html>
