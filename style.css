@@ -51,6 +51,9 @@ h1 {
 #followButtonDiv {
     text-align: center;
 }
+img {
+    object-fit: cover;
+}
 
 /* Find Friends Styling */
 #search {
