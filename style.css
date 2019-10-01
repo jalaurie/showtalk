@@ -74,6 +74,9 @@ h1 {
 .normal-link {
     text-decoration: underline;
 }
+#settingsContent {
+    margin: 0% 5% 10% 5%;
+}
 
 /* Header Styling */
 .navbar {

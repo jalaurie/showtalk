@@ -31,7 +31,7 @@
         
                 <ul class="list-unstyled components">
                     <li>
-                        <a href="index.html">Home</a>
+                        <a href="home.html">Home</a>
                     </li>
                     <li>
                         <a href="profile.html">Profile</a>
@@ -46,7 +46,7 @@
                 </ul>
             </nav>
         
-            <div id="content">
+            <div>
                 <nav class="navbar navbar-expand-lg navbar-light bg-light">
                     <div class="container-fluid">
                         <button type="button" id="sidebarCollapse" class="btn btn-info">
@@ -60,21 +60,31 @@
                         </button>
                     </div>
                 </nav>
-                <h2>Settings</h2>
-                <p>Fill out one or more fields and press submit to change.</p>
-                <form id="settingsForm">
-                    <div class="form-group"> <!--Remember to whitelist characters allowed so no XSS-->
-                        <p>Email: </p><input class="form-control" type="email" id="setemail" placeholder="jalaurie@go.olemiss.edu">
-                    </div>
-                    <div class="form-group"> <!--Remember to whitelist characters allowed so no XSS-->
-                        <p>Username: </p><input class="form-control" type="text" id="setuname" placeholder="jalaurie">
-                    </div>
-                    <div class="form-group"> <!--Remember to whitelist characters allowed so no XSS-->
-                        <p>Display Name: </p><input class="form-control" type="text" id="setdname" placeholder="Jennifer Lauriello">
-                    </div>
-                    <button type="submit" class="btn btn-info" id="submitSettings">Submit Changes</button>
-                </form>
-                <br><p>Forgot Password? <a class="normal-link" href="forgot.html">Send a reset link</a></p>
+
+                <div id="settingsContent">
+                    <h2>Settings</h2>
+                        
+                    <p>Forgot Password? <a class="normal-link" href="forgot.html">Send a reset link</a></p>
+                    <h3>Change Profile Picture</h3>
+                    <label for="profPic">Upload an image</label>
+                    <input type="file" class="form-control-file" id="profPic" accept=".jpg">
+                    <br><button class="btn btn-info" id="uploadPic">Use This Photo</button>
+                    <br><br>
+                    <h3>Change Account Information</h3>
+                    <p>Fill out one or more fields and press submit to change.</p>
+                    <form id="settingsForm">
+                        <div class="form-group"> <!--Remember to whitelist characters allowed so no XSS-->
+                            <p>Email: </p><input class="form-control" type="email" id="setemail" placeholder="jalaurie@go.olemiss.edu">
+                        </div>
+                        <div class="form-group"> <!--Remember to whitelist characters allowed so no XSS-->
+                            <p>Username: </p><input class="form-control" type="text" id="setuname" placeholder="jalaurie">
+                        </div>
+                        <div class="form-group"> <!--Remember to whitelist characters allowed so no XSS-->
+                            <p>Display Name: </p><input class="form-control" type="text" id="setdname" placeholder="Jennifer Lauriello">
+                        </div>
+                        <button type="submit" class="btn btn-info" id="submitSettings">Submit Changes</button>
+                    </form>
+                </div>
             </div>
         </div>
         
@@ -95,5 +105,16 @@
 
         <!-- Custom Script -->
         <script src="script.js"></script>
+
+        <!-- Image Upload Script -->
+        <script>
+            var picUpload = document.getElementById("profPic");
+            picUpload.onchange = function() {
+                if(this.files[0].size > 3*(1048576)){ //1MB in Bytes is 1,048,576
+                    alert("This file is too large. Please upload a file smaller than 3MB.");
+                    this.value = "";
+                };
+            };
+        </script>
     </body>
 </html>
