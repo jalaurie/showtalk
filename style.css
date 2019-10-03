@@ -1,8 +1,20 @@
+/* Font Imports */
+@import url('https://fonts.googleapis.com/css?family=Lobster|Notable|Zilla+Slab&display=swap');
+
 /*If the screen is larger than a mobile device */
 @media screen and (min-width: 600px) {
     /* Apply a margin */
     body {
         margin: 1% 15% 0% 15%;
+    }
+    h1 {
+        font-size: 3rem !important;
+    }
+    #profInfo h2 {
+        font-size: 3.5vw !important;
+    }
+    #profInfo h3 {
+        font-size: 2.5vw !important;
     }
     /* Change width of login card */
     .loginWrapper {
@@ -19,17 +31,25 @@
 body {
     min-width: 375px;
     padding: 5px;
+    background-color: #FFF8F2;
 }
 h1 {
     text-align: center;
+    font-size: 1.75rem;
+    font-family: 'Notable', sans-serif;
+}
+.btn-info {
+    background-color: #4F5D75;
+    border-color: #4F5D75;
+}
+.btn-info:hover {
+    background-color: #697C9B;
+    border-color: #697C9B;
 }
 
 /* Home Page Styling */
 .card {
     margin-bottom: 10px;
-}
-.bg {
-    /* position: relative; */
 }
 .reel {
     background-image: url("reel.jpg");
@@ -41,8 +61,23 @@ h1 {
 }
 
 /* Profile Styling */
-#profName {
-    text-align: center;
+#profileHeader {
+    display: flex;
+    padding-left: 10px;
+}
+#profInfo {
+    padding-left: 20px;
+}
+#profInfo h2 {
+    font-family: 'Lobster', cursive;
+    font-size: 7vw;
+}
+#profInfo h3 {
+    font-family: 'Zilla Slab', serif;
+    font-size: 5vw;
+}
+h3 {
+    font-family: 'Zilla Slab', serif;
 }
 .carousel-control-next-icon,
 .carousel-control-prev-icon {
@@ -52,11 +87,9 @@ h1 {
     padding-left: 50px;
     padding-right: 50px;
 }
-#followButtonDiv {
-    text-align: center;
-}
 img {
     object-fit: cover;
+    border-radius: 100px;
 }
 
 /* Find Friends Styling */
@@ -91,9 +124,9 @@ img {
 /* Header Styling */
 .navbar {
     padding: 15px 10px;
-    background: #fff;
-    border: none;
-    border-radius: 0;
+    background: #BFC0C0;
+    border: 1px solid rgb(137, 138, 138);
+    border-radius: 5px;
     margin-bottom: 40px;
     box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
 }
@@ -113,7 +146,7 @@ a:focus {
     left: -255px;
     height: 100vh;
     z-index: 999;
-    background: #7386D5;
+    background: #EF8354;
     color: #fff;
     transition: all 0.3s;
     overflow-y: scroll;
@@ -127,7 +160,7 @@ a:focus {
     height: 35px;
     line-height: 35px;
     text-align: center;
-    background: #7386D5;
+    background: #EF8354;
     position: absolute;
     top: 10px;
     right: 10px;
@@ -138,15 +171,15 @@ a:focus {
 }
 #dismiss:hover {
     background: #fff;
-    color: #7386D5;
+    color: #EF8354;
 }
 #sidebar .sidebar-header {
     padding: 20px;
-    background: #6d7fcc;
+    background: #F4A481;
 }
 #sidebar ul.components {
     padding: 20px 0;
-    border-bottom: 1px solid #47748b;
+    border-bottom: 1px solid #F4A481;
 }
 #sidebar ul p {
     color: #fff;
@@ -158,13 +191,13 @@ a:focus {
     display: block;
 }
 #sidebar ul li a:hover {
-    color: #7386D5;
+    color: #EF8354;
     background: #fff;
 }
 #sidebar ul li.active>a,
 a[aria-expanded="true"] {
     color: #fff;
-    background: #6d7fcc;
+    background: #F4A481;
 }
 a[data-toggle="collapse"] {
     position: relative;
@@ -179,7 +212,7 @@ a[data-toggle="collapse"] {
 ul ul a {
     font-size: 0.9em !important;
     padding-left: 30px !important;
-    background: #6d7fcc;
+    background: #F4A481;
 }
 ul.CTAs {
     padding: 20px;

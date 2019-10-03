@@ -33,7 +33,7 @@
                     <li>
                         <a href="home.html">Home</a>
                     </li>
-                    <li>
+                    <li class="active">
                         <a href="profile.html">Profile</a>
                     </li>
                     <li>
@@ -46,7 +46,7 @@
             </nav>
         
             <div>
-                <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <nav class="navbar navbar-expand-lg">
                     <div class="container-fluid">
                         <button type="button" id="sidebarCollapse" class="btn btn-info">
                             <i class="fas fa-align-left"></i>
@@ -60,18 +60,18 @@
                     </div>
                 </nav>
 
-                <center>
+                <div id="profileHeader">
                     <img id="profPic" src="https://firebasestorage.googleapis.com/v0/b/show-talk.appspot.com/o/profiles%2Fdefault.jpg?alt=media&token=b42938fb-1ead-4c09-83ee-34a8d92df784" alt="Profile Picture" width="120" height="120">
-                </center>
-
-                <h2 id="profName">jalaurie's Profile</h2> <!--Change this to whoever's username (or display name?)-->
-                
-                <div id="followButtonDiv">
-                    <button type="button" id="follow" class="btn btn-info">
-                        <i class="fas fa-plus"></i>
-                        <span>Follow</span>
-                    </button>
+                    <div id="profInfo">
+                        <h2 id="profName">Jennifer Lauriello</h2> <!--Change this to whoever's username (or display name?)-->
+                        <h3 id="profUser">@jalaurie</h3>
+                        <button type="button" id="follow" class="btn btn-info">
+                            <i class="fas fa-plus"></i>
+                            <span>Follow</span>
+                        </button>
+                    </div>
                 </div>
+                <br><br>
 
                 <h3>Lists</h3>
                 <div id="carousel" class="carousel slide" data-interval="false" data-ride="carousel" data-wrap="false">
