@@ -32,7 +32,7 @@ function checkUser() {
     });
 }
 
-//check login state and load profile picture
+//check login state and load profile info
 function checkUserForProfile() {
     auth.onAuthStateChanged(function(user) {
         if (user) { // User is signed in.
@@ -41,12 +41,50 @@ function checkUserForProfile() {
             //get profile picture if it exists
             var picsRef = storageRef.child('profiles');
             var curRef = picsRef.child(String(uid));
-            console.log(uid);
-
             curRef.getDownloadURL().then(function(url) {
                 document.getElementById('profPic').src = url;
             }).catch(function(error) { //picture doesn't exist
                 console.log(error);
+            });
+
+            //load profile information
+            var userRef = db.collection('user').doc(String(uid));
+            userRef.get().then(function(doc) {
+                if (doc.exists) {
+                   document.getElementById('profName').innerText = doc.data().displayname;
+                   document.getElementById('profUser').innerText += doc.data().username;
+                } else {
+                    console.log("No such document!");
+                }
+            }).catch(function(error) {
+                console.log("Error getting document: ", error);
+            });
+
+        } else { // User is not signed in.
+            window.alert("You are signed out!");
+            window.location.href = 'index.html';
+        }
+    });
+}
+
+//check login state and load user settings page
+function checkUserForSettings() {
+    auth.onAuthStateChanged(function(user) {
+        if (user) { // User is signed in.
+            uid = user.uid;
+
+            //populate settings form with database values
+            var userRef = db.collection('user').doc(String(uid));
+            userRef.get().then(function(doc) {
+                if (doc.exists) {
+                    document.getElementById('setemail').placeholder = doc.data().email;
+                    document.getElementById('setuname').placeholder = doc.data().username;
+                    document.getElementById('setdname').placeholder = doc.data().displayname;
+                } else {
+                    console.log("No such document!");
+                }
+            }).catch(function(error) {
+                console.log("Error getting document: ", error);
             });
 
         } else { // User is not signed in.

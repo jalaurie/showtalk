@@ -17,7 +17,7 @@
 
         <title>Show Talk</title>
     </head>
-    <body onload="checkUser()">
+    <body onload="checkUserForSettings()">
         <div class="wrapper">
             <!-- Sidebar -->
             <nav id="sidebar">
@@ -72,18 +72,17 @@
                     <br><br>
                     <h3>Change Account Information</h3>
                     <p>Fill out one or more fields and press submit to change.</p>
-                    <form id="settingsForm">
-                        <div class="form-group"> <!--Remember to whitelist characters allowed so no XSS-->
-                            <p>Email: </p><input class="form-control" type="email" id="setemail" placeholder="jalaurie@go.olemiss.edu">
-                        </div>
-                        <div class="form-group"> <!--Remember to whitelist characters allowed so no XSS-->
-                            <p>Username: </p><input class="form-control" type="text" id="setuname" placeholder="jalaurie">
-                        </div>
-                        <div class="form-group"> <!--Remember to whitelist characters allowed so no XSS-->
-                            <p>Display Name: </p><input class="form-control" type="text" id="setdname" placeholder="Jennifer Lauriello">
-                        </div>
-                        <button type="submit" class="btn btn-info" id="submitSettings">Submit Changes</button>
-                    </form>
+                    <div class="form-group"> <!--Remember to whitelist characters allowed so no XSS-->
+                        <p>Email: <input class="form-control" type="email" id="setemail" placeholder=""></p>
+                    </div>
+                    <div class="form-group"> <!--Remember to whitelist characters allowed so no XSS-->
+                        <p>Username: <input class="form-control" type="text" id="setuname" placeholder=""></p>
+                    </div>
+                    <div class="form-group"> <!--Remember to whitelist characters allowed so no XSS-->
+                        <p>Display Name: <input class="form-control" type="text" id="setdname" placeholder=""></p>
+                    </div>
+                <button class="btn btn-info" id="submitSettings" onclick="changeSettings()">Submit Changes</button>
+                <div id="successAcct" class="hidden">Account information updated successfully!</div>
                 </div>
             </div>
         </div>
@@ -106,8 +105,9 @@
         <!-- Custom Script -->
         <script src="script.js"></script>
 
-        <!-- Image Upload Script -->
+        <!-- Settings Script -->
         <script>
+            //Image Upload
             var picUpload = document.getElementById("profPic");
             var picsRef = storageRef.child('profiles');
             
@@ -128,6 +128,57 @@
                     });
                 }
             });
+
+            //Field Changes
+            function changeSettings() {
+                //default set field to its original value
+                var newEmail = document.getElementById('setemail').placeholder;
+                var newUname = document.getElementById('setuname').placeholder;
+                var newDname = document.getElementById('setdname').placeholder;
+
+                //if input, change field value
+                if(document.getElementById('setemail').value != "") {
+                    newEmail = document.getElementById('setemail').value;
+                }
+                if(document.getElementById('setuname').value != "") {
+                    newUname = document.getElementById('setuname').value;
+                }
+                if(document.getElementById('setdname').value != "") {
+                    newDname = document.getElementById('setdname').value;
+                }
+
+                //update the database
+                var thisUser = db.collection('user').doc(String(uid));
+                thisUser.get().then(function(doc) {
+                    if(doc.exists) {
+                        thisUser.update({
+                            email: newEmail,
+                            username: newUname,
+                            displayname: newDname
+                        }).then(function() {
+                            if(firebase.auth().currentUser.email != newEmail) {
+                                firebase.auth().currentUser.updateEmail(newEmail).then(function() {
+                                    console.log("Email update success");
+                                }).catch(function(error) {
+                                    console.log(error);
+                                });
+                            }
+                            console.log("User information updated");
+                            //reset the form fields
+                            document.getElementById('setemail').value = "";
+                            document.getElementById('setuname').value = "";
+                            document.getElementById('setdname').value = "";
+                            //change the values of the placeholders
+                            document.getElementById('setemail').placeholder = newEmail;
+                            document.getElementById('setuname').placeholder = newUname;
+                            document.getElementById('setdname').placeholder = newDname;
+                            //show success message
+                            $('#successAcct').removeClass('hidden');
+                        });
+                    }
+                });
+            }
+
         </script>
     </body>
 </html>
