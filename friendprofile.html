@@ -17,7 +17,7 @@
 
         <title>Show Talk</title>
     </head>
-    <body onload="checkUserForProfile()">
+    <body onload="checkUser()">
         <div class="wrapper">
             <!-- Sidebar -->
             <nav id="sidebar">
@@ -33,7 +33,7 @@
                     <li>
                         <a href="home.html">Home</a>
                     </li>
-                    <li class="active">
+                    <li>
                         <a href="profile.html">Profile</a>
                     </li>
                     <li>
@@ -76,7 +76,7 @@
                 <h3>Lists</h3>
                 <div id="carousel" class="carousel slide" data-interval="false" data-ride="carousel" data-wrap="false">
                     <div class="carousel-inner">
-                        <div class="carousel-item active"> <!--Maybe have an active one that says "nothing to see here" until it gets replaced?-->
+                        <div class="carousel-item active">
                             <div class="card">
                                 <div class="card-body carouselCardBody">
                                     <h5 class="card-title">Favorite Movies</h5>
@@ -84,8 +84,9 @@
                                         <li>Pirates of the Caribbean: The Curse of the Black Pearl</li>
                                         <li>Mean Girls</li>
                                         <li>21 Jump Street</li>
-                                        <li>Now You See Me</li>
+                                        <li>...</li> <!--If count > 3 or something add this-->
                                     </ul>
+                                    View this list
                                 </div>
                             </div>
                         </div>
@@ -97,10 +98,9 @@
                                         <li>Cats</li>
                                         <li>Les Miserables</li>
                                         <li>Legally Blonde</li>
-                                        <li>Anastasia</li>
-                                        <li>Mean Girls</li>
-                                        <li>Beetlejuice</li>
+                                        <li>...</li> <!--If count > 3 or something add this-->
                                     </ul>
+                                    View this list
                                 </div>
                             </div>
                         </div>
@@ -123,8 +123,6 @@
                             <div class="card">
                                 <div class="card-body carouselCardBody">
                                     <p class="card-text">
-                                        08/01/2019
-                                        <br><br>
                                         I just started watching Veronica Mars. It's so good!
                                     </p>
                                 </div>
@@ -134,8 +132,6 @@
                             <div class="card">
                                 <div class="card-body carouselCardBody">
                                     <p class="card-text">
-                                        09/22/2019
-                                        <br><br>
                                         Another status update.
                                     </p>
                                 </div>

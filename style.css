@@ -58,6 +58,8 @@ h1 {
     padding: 2% 16%;
     border-top: 3px solid black;
     border-bottom: 3px solid black;
+    margin-bottom: 5%;
+    max-height: 1000px;
 }
 
 /* Profile Styling */
