@@ -3,8 +3,8 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <!--Import Bootstrap-->
         
+        <!--Import Bootstrap-->
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
         <link rel="stylesheet" href="style.css">
         
@@ -39,7 +39,8 @@
                     <li>
                         <a href="friends.html">Find Friends</a>
                     </li>
-                    <li>
+                    
+                    <li class="active">
                         <a href="settings.html">Account Settings</a>
                     </li>
                 </ul>
@@ -59,28 +60,27 @@
                         </button>
                     </div>
                 </nav>
-
-                <button type="button" id="backToProf" class="btn btn-primary">
+                <button type="button" id="backToLists" class="btn btn-primary">
                     <i class="fas fa-arrow-left"></i>
-                    <span>Back to Profile</span>
+                    <span>Back to Lists</span>
                 </button>
                 <br><br>
-
-                <div class="bg">
-                    <div id="appendLists" class="reel">
-                        <div class="reel-with-button">
-                            <h4 id="userLists">User's Lists</h4>
-                            <button type="button" id="nlist" class="btn btn-info">
-                                <i class="fas fa-plus-circle"></i>
-                                <span>Create a New List</span>
-                            </button>
-                        </div>
-                        <br>
+                <div>
+                    <h2>Create List</h2>
+                    <div class="form-group"> <!--Remember to whitelist characters allowed so no XSS-->
+                        <h4>List Name: <input class="form-control" type="text" id="nlname" placeholder="My Favorite TV Shows"></h4>
+                    </div>
+                    <h4>List Items:</h4>
+                    <p>Enter list items separated by a new line.</p>
+                    <div class="form-group"> <!--Remember to whitelist characters allowed so no XSS-->
+                        <textarea class="form-control" rows="5" id="nlistItems">No items yet!</textarea>
+                    </div>
+                    <button class="btn btn-info" id="saveList">Create List</button>
                     </div>
                 </div>
             </div>
         </div>
-
+        
         <!--Bootstrap Required Scripts-->
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
@@ -99,68 +99,33 @@
         <!-- Custom Script -->
         <script src="script.js"></script>
 
-        <!-- Lists Script -->
+        <!-- New List Script -->
         <script>
-            var pageID = getIDfromURL();
-
-            //get current user information
-            firebase.auth().onAuthStateChanged(function(user) {
-                if (user) {
-                    var currentUser = auth.currentUser;
-                    allowEdits(currentUser.uid);
-                }
-            });
-
-            function allowEdits(uid) {
-                db.collection('user').doc(pageID).get().then(function(doc) {
-                    if(doc.exists) {
-                        document.getElementById('userLists').innerText = doc.data().displayname + "'s Lists";
-                    }
-                    else {
-                        console.log("No document found for uid " + pageID);
-                    }
-                });
-
-                if(pageID != uid) {
-                    $('.createList').remove();
-                    $('.editList').remove();
-                }
-            }
-
-            //get the user's lists
-            var lists = db.collection('list').where('uid', '==', pageID);
-            lists.get().then(function(snapshot) {
-                var content = "";
-                snapshot.forEach(function(doc) {
-                    content += '<div class="card">';
-                    content += '<div class="card-body">';
-                    content += '<h5 class="card-title">' + doc.data().lname + '</h5>';
-                    content += '<ul>';
-                    var arr = doc.data().items;
-                    for(var i=0; i < arr.length; i++) {
-                        content += '<li>' + arr[i] + '</li>';
-                    }
-                    content += '</ul>';
-                    content += '<button type="button" id="' + doc.id + '" class="editList btn btn-info" onclick="gotolist(`' + doc.id + '`)"><i class="fas fa-edit"></i><span>Edit List</span></button>';
-                    content += '</div></div>';
-                });
-                document.getElementById('appendLists').innerHTML += content;
-            });
-
-            //edit selected list
-            function gotolist(lid) {
-                window.location.href = 'edit.html?lid=' + lid;
-            }
-
-            //go to add new list page
-            $(document).on('click', '#nlist', function(e) {
-                window.location.href = 'newlist.html?uid=' + pageID;
-            });
-
-            $('#backToProf').on('click', function() {
+            $('#backToLists').on('click', function() {
                 window.history.back();
             });
 
+            var userID = getIDfromURL();
+
+            //submit new list to database and redirect
+            $('#saveList').on('click', function() {
+                //if they at least named the list, create it
+                if(document.getElementById('nlname').value != "") {
+                    var area = document.getElementById('nlistItems').value;
+                    var listitems = area.split("\n");
+                    //if there's an extra newline, pop it from the array
+                    if(listitems[listitems.length-1] == "") {
+                        listitems.pop();
+                    }
+
+                    var newKey = db.collection('list').push().key;
+                    db.collection('list').doc(newKey).set({
+                        items: listitems,
+                        uid: userID,
+                        lname: document.getElementById('nlname').value
+                    });
+                }
+            });
         </script>
     </body>
 </html>
