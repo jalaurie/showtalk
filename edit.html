@@ -1,0 +1,159 @@
+<!DOCTYPE HTML>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        
+        <!--Import Bootstrap-->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <link rel="stylesheet" href="style.css">
+        
+        <!-- Scrollbar Custom CSS -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
+
+        <!-- Import Font Awesome JS -->
+        <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
+        <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
+
+        <title>Show Talk</title>
+    </head>
+    <body onload="checkUser()">
+        <div class="wrapper">
+            <!-- Sidebar -->
+            <nav id="sidebar">
+                <div id="dismiss">
+                    <i class="fas fa-arrow-left"></i>
+                </div>
+        
+                <div class="sidebar-header">
+                    <h3>Menu</h3>
+                </div>
+        
+                <ul class="list-unstyled components">
+                    <li>
+                        <a href="home.html">Home</a>
+                    </li>
+                    <li>
+                        <a href="profile.html">Profile</a>
+                    </li>
+                    <li>
+                        <a href="friends.html">Find Friends</a>
+                    </li>
+                    
+                    <li class="active">
+                        <a href="settings.html">Account Settings</a>
+                    </li>
+                </ul>
+            </nav>
+        
+            <div>
+                <nav class="navbar navbar-expand-lg">
+                    <div class="container-fluid">
+                        <button type="button" id="sidebarCollapse" class="btn btn-info">
+                            <i class="fas fa-align-left"></i>
+                            <span>Menu</span>
+                        </button>
+                        <h1>Show Talk</h1>
+                        <button type="button" id="logout" class="btn btn-info">
+                            <i class="fas fa-sign-out-alt"></i>
+                            <span>Log Out</span>
+                        </button>
+                    </div>
+                </nav>
+                <button type="button" id="backToLists" class="btn btn-primary">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>Back to Lists</span>
+                </button>
+                <br><br>
+                <div>
+                    <h2>Edit List</h2>
+                    <div class="form-group"> <!--Remember to whitelist characters allowed so no XSS-->
+                        <h4>List Name: <input class="form-control" type="text" id="lname" placeholder="Invalid List"></h4>
+                    </div>
+                    <h4>List Items:</h4>
+                    <p>Enter list items separated by a new line. To remove a list item, simply delete it.</p>
+                    <div class="form-group"> <!--Remember to whitelist characters allowed so no XSS-->
+                        <textarea class="form-control" rows="5" id="listItems">No items found.</textarea>
+                    </div>
+                    <button class="btn btn-info" id="updateList">Update List</button>
+                    <div id="successList" class="hidden">List updated successfully!</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!--Bootstrap Required Scripts-->
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+        
+        <!-- jQuery Custom Scroller CDN -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
+        
+        <!-- Firebase Required Scripts -->
+        <script src="https://www.gstatic.com/firebasejs/6.0.2/firebase-app.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/6.0.2/firebase-auth.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/6.0.2/firebase-database.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/6.0.2/firebase-firestore.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/6.0.2/firebase-storage.js"></script>
+
+        <!-- Custom Script -->
+        <script src="script.js"></script>
+
+        <!-- Edit List Script -->
+        <script>
+            $('#backToLists').on('click', function() {
+                window.history.back();
+            });
+
+            var lid = getIDfromURL();
+
+            //populate current list information
+            db.collection('list').doc(lid).get().then(function(doc) {
+                document.getElementById('lname').placeholder = doc.data().lname;
+                var arr = doc.data().items;
+                var content = "";
+                var i;
+                for(i=0; i < arr.length-1; i++) {
+                    content += arr[i] + "\n";
+                }
+                content += arr[i];
+                document.getElementById('listItems').value = content;
+            });
+
+            $('#updateList').on('click', function() {
+                //get array of list items from textarea
+                var area = document.getElementById('listItems').value;
+                var listitems = area.split("\n");
+
+                //if there's an extra newline, pop it from the array
+                if(listitems[listitems.length-1] == "") {
+                    listitems.pop();
+                }
+
+                //if there is a value in the list name field, update it
+                if(document.getElementById('lname').value != "") {
+                    var listDoc = db.collection('list').doc(lid);
+                    listDoc.update({
+                        items: listitems,
+                        lname: document.getElementById('lname').value
+                    }).then(function() {
+                        console.log("List items and name successfully updated");
+                        $('#successList').removeClass('hidden');
+                    });
+                }
+                else { //only update the array of items
+                    var listDoc = db.collection('list').doc(lid);
+                    listDoc.update({
+                        items: listitems
+                    }).then(function() {
+                        console.log("List items successfully updated");
+                        $('#successList').removeClass('hidden');
+                    });
+                }
+
+            });
+            
+        </script>
+    </body>
+</html>
