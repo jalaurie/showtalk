@@ -3,8 +3,8 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <!--Import Bootstrap-->
         
+        <!--Import Bootstrap-->
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
         <link rel="stylesheet" href="style.css">
         
@@ -39,6 +39,7 @@
                     <li>
                         <a href="friends.html">Find Friends</a>
                     </li>
+                    
                     <li>
                         <a href="settings.html">Account Settings</a>
                     </li>
@@ -59,28 +60,23 @@
                         </button>
                     </div>
                 </nav>
-
-                <button type="button" id="backToProf" class="btn btn-primary">
+                <button type="button" id="backToS" class="btn btn-primary">
                     <i class="fas fa-arrow-left"></i>
-                    <span>Back to Profile</span>
+                    <span>Back to Statuses</span>
                 </button>
                 <br><br>
-
-                <div class="bg">
-                    <div class="reel" id="statuses">
-                        <div class="reel-with-button">
-                            <h4 id="userUpdates">User's Updates</h4>
-                            <button type="button" id="addS" class="createUpdate btn btn-info">
-                                <i class="fas fa-plus-circle"></i>
-                                <span>Add a Status Update</span>
-                            </button>
-                        </div>
-                        <br>
+                <div>
+                    <h2>What's on your mind?</h2>
+                    <p>Character Limit: 300</p>
+                    <div class="form-group"> <!--Remember to whitelist characters allowed so no XSS-->
+                        <textarea class="form-control" rows="5" id="newStatus" maxlength="300"></textarea>
+                    </div>
+                    <button class="btn btn-info" id="postStatus">Post Status</button>
                     </div>
                 </div>
             </div>
         </div>
-
+        
         <!--Bootstrap Required Scripts-->
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
@@ -99,69 +95,28 @@
         <!-- Custom Script -->
         <script src="script.js"></script>
 
-        <!-- Updates Script -->
+        <!-- New List Script -->
         <script>
-            //get current user information
-            firebase.auth().onAuthStateChanged(function(user) {
-                if (user) {
-                    var currentUser = auth.currentUser;
-                    allowEdits(currentUser.uid);
-                }
-            });
-            var pageID = getIDfromURL();
-            function allowEdits(uid) {
-                db.collection('user').doc(pageID).get().then(function(doc) {
-                    if(doc.exists) {
-                        document.getElementById('userUpdates').innerText = doc.data().displayname + "'s Updates";
-                    }
-                    else {
-                        console.log("No document found for uid " + pageID);
-                    }
-                });
-
-                if(pageID != uid) {
-                    $('.createUpdate').remove();
-                    $('.delUpdate').remove();
-                }
-            }
-
-            //get the user's status updates
-            var ups = db.collection('status').where('uid', '==', pageID);
-            ups.get().then(function(snapshot) {
-                var content = "";
-                snapshot.forEach(function(doc) {
-                    content += '<div class="card">';
-                    content += '<div class="card-body">';
-                    content += '<p class="card-text">';
-                    content += doc.data().time.toDate() + '<br><br>' + doc.data().text;
-                    content += '</p>';
-                    content += '<button type="button" class="delUpdate btn btn-info" onclick="deleteme(`' + doc.id + '`)"><i class="fas fa-minus-circle"></i><span>Delete Update</span></button></div></div>';
-                });
-                document.getElementById('statuses').innerHTML += content;
-            });
-
-            //delete selected status
-            function deleteme(sid) {
-                var result = confirm("Are you sure you want to delete this status update? This action cannot be undone.");
-                if(result) { //selected yes
-                    db.collection('status').doc(sid).delete().then(function() {
-                        window.alert("Status deleted!");
-                        location.reload();
-                    }).catch(function(error) {
-                        console.log(error);
-                    });
-                }
-            }
-
-            //go to add new list page
-            $(document).on('click', '#addS', function(e) {
-                window.location.href = 'newstatus.html?uid=' + pageID;
-            });
-
-            $('#backToProf').on('click', function() {
+            $('#backToS').on('click', function() {
                 window.history.back();
             });
 
+            var userID = getIDfromURL();
+
+            //submit new list to database and redirect
+            $('#postStatus').on('click', function() {
+                var area = document.getElementById('newStatus').value;
+                if(area != "") { //if the status update isn't empty, post it
+                    db.collection('status').add({
+                        uid: userID,
+                        time: firebase.firestore.Timestamp.now(),
+                        text: area
+                    }).then(function() {
+                        window.alert("Status successfully posted!");
+                        window.history.back();
+                    });
+                }
+            });
         </script>
     </body>
 </html>
