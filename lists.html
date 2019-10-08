@@ -60,23 +60,22 @@
                     </div>
                 </nav>
 
-                <div id="profileHeader">
-                    <img id="profPic" src="https://firebasestorage.googleapis.com/v0/b/show-talk.appspot.com/o/profiles%2Fdefault.jpg?alt=media&token=b42938fb-1ead-4c09-83ee-34a8d92df784" alt="Profile Picture" width="120" height="120">
-                    <div id="profInfo">
-                        <h2 id="profName"></h2>
-                        <h3 id="profUser">@</h3>
-                        <button type="button" id="follow" class="btn btn-info">
-                            <i class="fas fa-plus"></i>
-                            <span>Follow</span>
-                        </button>
-                    </div>
-                </div>
+                <button type="button" id="backToProf" class="btn btn-primary">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>Back to Profile</span>
+                </button>
                 <br><br>
 
                 <div class="bg">
                     <div class="reel">
-                        <h4>Lists</h4>
-                        
+                        <div class="reel-with-button">
+                            <h4 id="userLists">User's Lists</h4>
+                            <button type="button" class="createList btn btn-info">
+                                <i class="fas fa-plus-circle"></i>
+                                <span>Create a New List</span>
+                            </button>
+                        </div>
+                        <br>
                         <div class="card">
                             <div class="card-body">
                                 <h5 class="card-title">Favorite Movies</h5>
@@ -86,6 +85,10 @@
                                     <li>21 Jump Street</li>
                                     <li>Now You See Me</li>
                                 </ul>
+                                <button type="button" class="editList btn btn-info">
+                                    <i class="fas fa-edit"></i>
+                                    <span>Edit List</span>
+                                </button>
                             </div>
                         </div>
                         <div class="card">
@@ -99,6 +102,10 @@
                                     <li>Mean Girls</li>
                                     <li>Beetlejuice</li>
                                 </ul>
+                                <button type="button" class="editList btn btn-info">
+                                    <i class="fas fa-edit"></i>
+                                    <span>Edit List</span>
+                                </button>
                             </div>
                         </div>
                         <br>
@@ -124,5 +131,39 @@
 
         <!-- Custom Script -->
         <script src="script.js"></script>
+
+        <!-- Lists Script -->
+        <script>
+            //get current user information
+            firebase.auth().onAuthStateChanged(function(user) {
+                if (user) {
+                    var currentUser = auth.currentUser;
+                    allowEdits(currentUser.uid);
+                }
+            });
+
+            function allowEdits(uid) {
+                var pageID = getIDfromURL();
+
+                db.collection('user').doc(pageID).get().then(function(doc) {
+                    if(doc.exists) {
+                        document.getElementById('userLists').innerText = doc.data().displayname + "'s Lists";
+                    }
+                    else {
+                        console.log("No document found for uid " + pageID);
+                    }
+                });
+
+                if(pageID != uid) {
+                    $('.createList').remove();
+                    $('.editList').remove();
+                }
+            }
+
+            $('#backToProf').on('click', function() {
+                window.history.back();
+            });
+
+        </script>
     </body>
 </html>

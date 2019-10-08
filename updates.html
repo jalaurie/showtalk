@@ -60,39 +60,46 @@
                     </div>
                 </nav>
 
-                <div id="profileHeader">
-                    <img id="profPic" src="https://firebasestorage.googleapis.com/v0/b/show-talk.appspot.com/o/profiles%2Fdefault.jpg?alt=media&token=b42938fb-1ead-4c09-83ee-34a8d92df784" alt="Profile Picture" width="120" height="120">
-                    <div id="profInfo">
-                        <h2 id="profName"></h2>
-                        <h3 id="profUser">@</h3>
-                        <button type="button" id="follow" class="btn btn-info">
-                            <i class="fas fa-plus"></i>
-                            <span>Follow</span>
-                        </button>
-                    </div>
-                </div>
+                <button type="button" id="backToProf" class="btn btn-primary">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>Back to Profile</span>
+                </button>
                 <br><br>
 
                 <div class="bg">
                     <div class="reel">
-                        <h4>Status Updates</h4>
-                        
-                        <div class="card">
-                            <div class="card-body">
-                                <p class="card-text">
-                                    08/01/2019
-                                    <br><br>
-                                    I just started watching Veronica Mars. It's so good!
-                                </p>
-                            </div>
+                        <div class="reel-with-button">
+                            <h4 id="userLists">User's Updates</h4>
+                            <button type="button" class="createUpdate btn btn-info">
+                                <i class="fas fa-plus-circle"></i>
+                                <span>Add a Status Update</span>
+                            </button>
                         </div>
+                        <br>
                         <div class="card">
                             <div class="card-body">
                                 <p class="card-text">
                                     09/22/2019
                                     <br><br>
+                                    I just started watching Veronica Mars. It's so good!
+                                </p>
+                                <button type="button" class="delUpdate btn btn-info">
+                                    <i class="fas fa-minus-circle"></i>
+                                    <span>Delete Update</span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-body">
+                                <p class="card-text">
+                                    08/02/2019
+                                    <br><br>
                                     Another status update.
                                 </p>
+                                <button type="button" class="delUpdate btn btn-info">
+                                    <i class="fas fa-minus-circle"></i>
+                                    <span>Delete Update</span>
+                                </button>
                             </div>
                         </div>
                         <br>
@@ -118,5 +125,39 @@
 
         <!-- Custom Script -->
         <script src="script.js"></script>
+
+        <!-- Updates Script -->
+        <script>
+            //get current user information
+            firebase.auth().onAuthStateChanged(function(user) {
+                if (user) {
+                    var currentUser = auth.currentUser;
+                    allowEdits(currentUser.uid);
+                }
+            });
+
+            function allowEdits(uid) {
+                var pageID = getIDfromURL();
+
+                db.collection('user').doc(pageID).get().then(function(doc) {
+                    if(doc.exists) {
+                        document.getElementById('userLists').innerText = doc.data().displayname + "'s Updates";
+                    }
+                    else {
+                        console.log("No document found for uid " + pageID);
+                    }
+                });
+
+                if(pageID != uid) {
+                    $('.createUpdate').remove();
+                    $('.delUpdate').remove();
+                }
+            }
+
+            $('#backToProf').on('click', function() {
+                window.history.back();
+            });
+
+        </script>
     </body>
 </html>

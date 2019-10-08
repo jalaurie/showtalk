@@ -125,6 +125,13 @@ img {
     display: none;
 }
 
+/* Lists Styling */
+.reel-with-button {
+    display: flex;
+    justify-content: space-between;
+    padding: 0px 5px;
+}
+
 /* Header Styling */
 .navbar {
     padding: 15px 10px;

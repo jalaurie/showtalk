@@ -65,10 +65,6 @@
                     <div id="profInfo">
                         <h2 id="profName"></h2>
                         <h3 id="profUser">@</h3>
-                        <button type="button" id="follow" class="btn btn-info">
-                            <i class="fas fa-plus"></i>
-                            <span>Follow</span>
-                        </button>
                     </div>
                 </div>
                 <br><br>
@@ -114,8 +110,11 @@
                         <span class="sr-only">Next</span>
                     </a>
                 </div>
-                <p>View all lists</p>
-                <br> 
+                <button type="button" id="seeLists" class="btn btn-info">
+                    <i class="fas fa-list-ul"></i>
+                    <span>View All Lists</span>
+                </button>
+                <br><br>
                 <h3>Recent Status Updates</h3>
                 <div id="carousel2" class="carousel slide" data-interval="false" data-ride="carousel" data-wrap="false">
                     <div class="carousel-inner">
@@ -123,7 +122,7 @@
                             <div class="card">
                                 <div class="card-body carouselCardBody">
                                     <p class="card-text">
-                                        08/01/2019
+                                        09/22/2019
                                         <br><br>
                                         I just started watching Veronica Mars. It's so good!
                                     </p>
@@ -134,7 +133,7 @@
                             <div class="card">
                                 <div class="card-body carouselCardBody">
                                     <p class="card-text">
-                                        09/22/2019
+                                        08/02/2019
                                         <br><br>
                                         Another status update.
                                     </p>
@@ -151,7 +150,11 @@
                         <span class="sr-only">Next</span>
                     </a>
                 </div>
-                <p>View all status updates</p>
+                <button type="button" id="seeUpdates" class="btn btn-info">
+                    <i class="fas fa-film"></i>
+                    <span>View All Status Updates</span>
+                </button>
+                <br><br><br>
             </div>
         </div>
 
@@ -172,5 +175,15 @@
 
         <!-- Custom Script -->
         <script src="script.js"></script>
+
+        <script>
+            $('#seeLists').on('click', function() {
+                window.location.href = "lists.html?uid=" + auth.currentUser.uid;
+            });
+                
+            $('#seeUpdates').on('click', function() {
+                window.location.href = "updates.html?uid=" + auth.currentUser.uid;
+            });
+        </script>
     </body>
 </html>

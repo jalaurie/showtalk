@@ -94,6 +94,14 @@ function checkUserForSettings() {
     });
 }
 
+//retrieve uid from url query string
+function getIDfromURL() {
+    var url = window.location.href;
+    var endofurl = url.split('=');
+    var cur_uid = endofurl[endofurl.length-1];
+    return cur_uid;
+}
+
 //forgot password function
 function forgot() {
     var email = document.getElementById('forgotemail').value;
