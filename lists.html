@@ -67,46 +67,13 @@
                 <br><br>
 
                 <div class="bg">
-                    <div class="reel">
+                    <div id="appendLists" class="reel">
                         <div class="reel-with-button">
                             <h4 id="userLists">User's Lists</h4>
                             <button type="button" class="createList btn btn-info">
                                 <i class="fas fa-plus-circle"></i>
                                 <span>Create a New List</span>
                             </button>
-                        </div>
-                        <br>
-                        <div class="card">
-                            <div class="card-body">
-                                <h5 class="card-title">Favorite Movies</h5>
-                                <ul>
-                                    <li>Pirates of the Caribbean: The Curse of the Black Pearl</li>
-                                    <li>Mean Girls</li>
-                                    <li>21 Jump Street</li>
-                                    <li>Now You See Me</li>
-                                </ul>
-                                <button type="button" class="editList btn btn-info">
-                                    <i class="fas fa-edit"></i>
-                                    <span>Edit List</span>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="card">
-                            <div class="card-body">
-                                <h5 class="card-title">Musicals</h5>
-                                <ul>
-                                    <li>Cats</li>
-                                    <li>Les Miserables</li>
-                                    <li>Legally Blonde</li>
-                                    <li>Anastasia</li>
-                                    <li>Mean Girls</li>
-                                    <li>Beetlejuice</li>
-                                </ul>
-                                <button type="button" class="editList btn btn-info">
-                                    <i class="fas fa-edit"></i>
-                                    <span>Edit List</span>
-                                </button>
-                            </div>
                         </div>
                         <br>
                     </div>
@@ -134,6 +101,8 @@
 
         <!-- Lists Script -->
         <script>
+            var pageID = getIDfromURL();
+
             //get current user information
             firebase.auth().onAuthStateChanged(function(user) {
                 if (user) {
@@ -143,8 +112,6 @@
             });
 
             function allowEdits(uid) {
-                var pageID = getIDfromURL();
-
                 db.collection('user').doc(pageID).get().then(function(doc) {
                     if(doc.exists) {
                         document.getElementById('userLists').innerText = doc.data().displayname + "'s Lists";
@@ -159,6 +126,26 @@
                     $('.editList').remove();
                 }
             }
+
+            //get the user's lists
+            var lists = db.collection('list').where('uid', '==', pageID);
+            lists.get().then(function(snapshot) {
+                var content = "";
+                snapshot.forEach(function(doc) {
+                    content += '<div class="card">';
+                    content += '<div class="card-body">';
+                    content += '<h5 class="card-title">' + doc.data().lname + '</h5>';
+                    content += '<ul>';
+                    var arr = doc.data().items;
+                    for(var i=0; i < arr.length; i++) {
+                        content += '<li>' + arr[i] + '</li>';
+                    }
+                    content += '</ul>';
+                    content += '<button type="button" class="editList btn btn-info"><i class="fas fa-edit"></i><span>Edit List</span></button>';
+                    content += '</div></div>';
+                });
+                document.getElementById('appendLists').innerHTML += content;
+            });
 
             $('#backToProf').on('click', function() {
                 window.history.back();
