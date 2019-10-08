@@ -114,36 +114,36 @@
                     //make sure list name doesn't exist already
                     var query = db.collection('list').where('uid', '==', userID);
                     var exists = false;
-                    exists = query.get().then(async function(snapshot) {
+                    query.get().then(async function(snapshot) {
                         snapshot.forEach(function(doc) {
                             if(doc.data().lname == document.getElementById('nlname').value) {
-                                return true;
+                                exists = true;
                             }
                         });
-                    });
-                    
-                    //if a list with that name already exists, try again
-                    if(exists) {
-                        window.alert("A list with that name already exists. Try again!");
-                    }
-                    else { //okay to continue
-                        var area = document.getElementById('nlistItems').value;
-                        var listitems = area.split("\n");
-                        //if there's an extra newline, pop it from the array
-                        if(listitems[listitems.length-1] == "") {
-                            listitems.pop();
+                    }).then(function() {
+                        //if a list with that name already exists, try again
+                        if(exists) {
+                            window.alert("A list with that name already exists. Try again!");
                         }
+                        else { //okay to continue
+                            var area = document.getElementById('nlistItems').value;
+                            var listitems = area.split("\n");
+                            //if there's an extra newline, pop it from the array
+                            if(listitems[listitems.length-1] == "") {
+                                listitems.pop();
+                            }
 
-                        //submit
-                        db.collection('list').add({
-                            items: listitems,
-                            uid: userID,
-                            lname: document.getElementById('nlname').value
-                        }).then(function() {
-                            window.alert("Successfully created list!");
-                            window.history.back();
-                        });
-                    }  
+                            //submit
+                            db.collection('list').add({
+                                items: listitems,
+                                uid: userID,
+                                lname: document.getElementById('nlname').value
+                            }).then(function() {
+                                window.alert("Successfully created list!");
+                                window.history.back();
+                            });
+                        }  
+                    }); 
                 }
             });
         </script>

@@ -128,7 +128,7 @@
             }
 
             //get the user's lists
-            var lists = db.collection('list').where('uid', '==', pageID); //orderBy
+            var lists = db.collection('list').where('uid', '==', pageID);
             lists.get().then(function(snapshot) {
                 var content = "";
                 snapshot.forEach(function(doc) {
