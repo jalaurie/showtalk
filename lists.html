@@ -141,11 +141,15 @@
                         content += '<li>' + arr[i] + '</li>';
                     }
                     content += '</ul>';
-                    content += '<button type="button" class="editList btn btn-info"><i class="fas fa-edit"></i><span>Edit List</span></button>';
+                    content += '<button type="button" id="' + doc.id + '" class="editList btn btn-info" onclick="gotolist(`' + doc.id + '`)"><i class="fas fa-edit"></i><span>Edit List</span></button>';
                     content += '</div></div>';
                 });
                 document.getElementById('appendLists').innerHTML += content;
             });
+
+            function gotolist(lid) {
+                window.location.href = 'edit.html?lid=' + lid;
+            }
 
             $('#backToProf').on('click', function() {
                 window.history.back();
