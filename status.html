@@ -3,13 +3,11 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <!--Import Bootstrap-->
         
-        <!-- Import Bootstrap -->
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-        
-        <!-- Custom CSS -->
         <link rel="stylesheet" href="style.css">
-
+        
         <!-- Scrollbar Custom CSS -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
 
@@ -32,7 +30,7 @@
                 </div>
         
                 <ul class="list-unstyled components">
-                    <li class="active">
+                    <li>
                         <a href="home.html">Home</a>
                     </li>
                     <li>
@@ -41,6 +39,7 @@
                     <li>
                         <a href="friends.html">Find Friends</a>
                     </li>
+                    
                     <li>
                         <a href="settings.html">Account Settings</a>
                     </li>
@@ -54,20 +53,23 @@
                             <i class="fas fa-align-left"></i>
                             <span>Menu</span>
                         </button>
-                    <h1>Show Talk</h1>
+                        <h1>Show Talk</h1>
                         <button type="button" id="logout" class="btn btn-info">
                             <i class="fas fa-sign-out-alt"></i>
                             <span>Log Out</span>
                         </button>
                     </div>
                 </nav>
-                <div class="bg">
-                    <div class="reel" id="timeln">
-                    </div>
+                <button type="button" id="backToHome" class="btn btn-primary">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>Back to Home</span>
+                </button>
+                <br><br>
+                <div id="popStat">
                 </div>
             </div>
         </div>
-
+        
         <!--Bootstrap Required Scripts-->
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
@@ -86,53 +88,44 @@
         <!-- Custom Script -->
         <script src="script.js"></script>
 
-        <!-- Home Script -->
+        <!-- Status Script -->
         <script>
+            $('#backToHome').on('click', function() {
+                window.history.back();
+            });
+
             //get current user information
             firebase.auth().onAuthStateChanged(function(user) {
                 if (user) {
                     var currentUser = auth.currentUser;
-                    populate(currentUser.uid);
+                    loadStatus(currentUser.uid);
                 }
             });
 
-            //populate timeline
-            function populate(uid) {
-                db.collection('status').orderBy('time', 'desc').onSnapshot(function(snapshot) {
-                    var content = '';
-                    document.getElementById('timeln').innerHTML = '';
-                    $('#timeln').append('<h4>Status Updates:</h4>');
-                    db.collection('user').doc(uid).get().then(function(userdoc) {
-                        var f = userdoc.data().following;
-                        var c = 1;
-                        snapshot.forEach(function(doc) {
-                            if(f.includes(doc.data().uid)) { //append if the user is following them
-                                content += '<div class="card" onclick="viewStatus(`'+doc.id+'`)"><div class="card-body">';
-                                content += '<h5 class="card-title" id="fixme'+c+'"></h5>';
-                                replaceFixMe(uid, doc.data().uid, c);
-                                content += '<p class="card-text">' + doc.data().time.toDate() + '<br><br>' + doc.data().text + '</p>';
-                                content += '<button type="button" class="btn btn-info"><i class="fas fa-comment"></i><span>Comment</span></button></div></div>';
-                                c++;
-                            }
-                        });
-                        $('#timeln').append(content);
+            var pageID = getIDfromURL();
+
+            function loadStatus(thisuid) {
+                //post status to page
+                db.collection('status').doc(pageID).get().then(function(doc) {
+                    db.collection('user').doc(doc.data().uid).get().then(function(userdoc) {
+                        var content = '<div class="card"><div class="card-body">';
+                        content += '<h5 class="card-title" id="tryToLink">'+userdoc.data().displayname+' @' + userdoc.data().username+ '</h5>';
+                        content += '<p class="card-text">' + doc.data().time.toDate() + '<br><br>' + doc.data().text + '</p>';
+                        content += '<button type="button" class="btn btn-info"><i class="fas fa-comment"></i><span>Comment</span></button></div></div>'; 
+                        tryToLinkProf(thisuid, userdoc.id);
+                        $('#popStat').append(content);
                     });
                 });
-                // $('#timeln').append(`<div style="text-align:center;">You've reached the bottom.</div>`);
             }
 
-            function viewStatus(sid) {
-                window.location.href = 'status.html?sid=' + sid;
+            function tryToLinkProf(thisuid, tryuid) {
+                if(tryuid != thisuid) {
+                    $(document).on('click', '#tryToLink', function(e) {
+                        window.location.href = 'friendprofile.html?fid=' + tryuid;
+                    });
+                }
             }
 
-            function replaceFixMe(theuid, auid, c) {
-                db.collection('user').doc(auid).get().then(function(posterdoc) {
-                    var thisid = 'fixme' + c;
-                    if(auid != theuid) //only allow a user to view friend profiles that are not their own
-                        document.getElementById(thisid).onclick = function() {window.location.href = 'friendprofile.html?fid=' + posterdoc.id;};
-                    document.getElementById(thisid).innerText = posterdoc.data().displayname + " @" + posterdoc.data().username;
-                });
-            }
         </script>
     </body>
 </html>
