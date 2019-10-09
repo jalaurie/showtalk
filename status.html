@@ -67,6 +67,18 @@
                 <br><br>
                 <div id="popStat">
                 </div>
+                <br>
+                <p>Leave a Comment (character limit 200):</p>
+                <input class="form-control" type="text" id="comment" maxlength="200">
+                <br>
+                <button type="button" class="btn btn-info" id="postComment">
+                    <i class="fas fa-comment"></i>
+                    <span>Comment</span>
+                </button>
+                <br><br>
+                <h3>Comments:</h3>
+                <div id="apCom"></div>
+                <br><br>
             </div>
         </div>
         
@@ -113,10 +125,34 @@
                         var ms = doc.data().time.toMillis(); //get date in milliseconds
                         var d = new Date(ms);
                         content += '<p class="card-text">' + d.toLocaleString() + '<br><br>' + doc.data().text + '</p>';
-                        content += '<button type="button" class="btn btn-info"><i class="fas fa-comment"></i><span>Comment</span></button></div></div>'; 
+                        content += '</div></div>'; 
                         tryToLinkProf(thisuid, userdoc.id);
                         $('#popStat').append(content);
                     });
+                });
+
+                //post comments to page
+                var query = db.collection('comment').orderBy('time', 'desc');
+                query.onSnapshot(function(snapshot) {
+                    document.getElementById('apCom').innerHTML = '';
+                    var content = '';
+                    var ct = 1;
+                    snapshot.forEach(function(doc) {
+                        if(doc.data().stid == pageID) {
+                            content += '<div class="card"><div class="card-body">';
+                            content += '<h5 class="card-title" id="replaceCommenter' + ct + '"></h5>';
+                            var ms = doc.data().time.toMillis(); //get date in milliseconds
+                            var d = new Date(ms);
+                            content += '<p class="card-text">' + d.toLocaleString() + '<br><br>' + doc.data().text + '</p>';
+                            if(doc.data().uid == thisuid) { //show delete option if poster
+                                content += '<button type="button" class="delUpdate btn btn-info" onclick="deleteComment(`' + doc.id + '`)"><i class="fas fa-minus-circle"></i><span>Delete Comment</span></button>';
+                            }
+                            content += '</div></div>';
+                            replaceCommenter(doc.data().uid, ct);
+                            ct++;
+                        }
+                    });
+                    $('#apCom').append(content);
                 });
             }
 
@@ -127,6 +163,33 @@
                     });
                 }
             }
+
+            function replaceCommenter(thisuid, count) {
+                db.collection('user').doc(thisuid).get().then(function(doc) {
+                    var thisid = 'replaceCommenter' + count;
+                    document.getElementById(thisid).innerText = doc.data().displayname + " @" + doc.data().username;
+                    if(thisuid != auth.currentUser.uid) //ability to go to profile if it's not your own
+                        document.getElementById(thisid).onclick = function() {window.location.href='friendprofile.html?fid=' + thisuid;};
+                });
+            }
+
+            function deleteComment(cid) {
+                db.collection('comment').doc(cid).delete().catch(function(error) {
+                    console.log(error);
+                });
+            }
+
+            $('#postComment').on('click', function() {
+                var userid = auth.currentUser.uid;
+                db.collection('comment').add({
+                    uid: userid,
+                    time: firebase.firestore.Timestamp.now(),
+                    text: document.getElementById('comment').value,
+                    stid: pageID
+                }).then(function() {
+                    document.getElementById('comment').value = '';
+                });
+            });
 
         </script>
     </body>

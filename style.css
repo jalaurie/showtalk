@@ -121,6 +121,12 @@ img {
     list-style: none;
 }
 
+/* Status Styling */
+#apCom {
+    max-height: 500px;
+    overflow-y: scroll;
+}
+
 /* Settings Styling */
 .normal-link {
     text-decoration: underline;

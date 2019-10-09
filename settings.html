@@ -73,13 +73,13 @@
                     <h3>Change Account Information</h3>
                     <p>Fill out one or more fields and press submit to change.</p>
                     <div class="form-group"> <!--Remember to whitelist characters allowed so no XSS-->
-                        <p>Email: <input class="form-control" type="email" id="setemail" placeholder=""></p>
+                        <p>Email: <input class="form-control" type="email" id="setemail" placeholder="" maxlength="100"></p>
                     </div>
                     <div class="form-group"> <!--Remember to whitelist characters allowed so no XSS-->
-                        <p>Username: <input class="form-control" type="text" id="setuname" placeholder=""></p>
+                        <p>Username: <input class="form-control" type="text" id="setuname" placeholder="" maxlength="20"></p>
                     </div>
                     <div class="form-group"> <!--Remember to whitelist characters allowed so no XSS-->
-                        <p>Display Name: <input class="form-control" type="text" id="setdname" placeholder=""></p>
+                        <p>Display Name: <input class="form-control" type="text" id="setdname" placeholder="" maxlength="50"></p>
                     </div>
                 <button class="btn btn-info" id="submitSettings" onclick="changeSettings()">Submit Changes</button>
                 <div id="successAcct" class="hidden">Account information updated successfully!</div>
