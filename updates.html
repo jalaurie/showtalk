@@ -132,7 +132,9 @@
                     content += '<div class="card">';
                     content += '<div class="card-body">';
                     content += '<p class="card-text">';
-                    content += doc.data().time.toDate() + '<br><br>' + doc.data().text;
+                    var ms = doc.data().time.toMillis(); //get date in milliseconds
+                    var d = new Date(ms);
+                    content += d.toLocaleString() + '<br><br>' + doc.data().text;
                     content += '</p>';
                     if(uid == pageID) //don't add delete button otherwise
                         content += '<button type="button" class="delUpdate btn btn-info" onclick="deleteme(`' + doc.id + '`)"><i class="fas fa-minus-circle"></i><span>Delete Update</span></button></div></div>';

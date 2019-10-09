@@ -113,7 +113,9 @@
                                 content += '<div class="card"><div class="card-body">';
                                 content += '<h5 class="card-title" id="fixme'+c+'"></h5>';
                                 replaceFixMe(uid, doc.data().uid, c);
-                                content += '<p class="card-text" onclick="viewStatus(`'+doc.id+'`)">' + doc.data().time.toDate() + '<br><br>' + doc.data().text + '</p>';
+                                var ms = doc.data().time.toMillis(); //get date in milliseconds
+                                var d = new Date(ms);
+                                content += '<p class="card-text" onclick="viewStatus(`'+doc.id+'`)">' + d.toLocaleString() + '<br><br>' + doc.data().text + '</p>';
                                 content += '<button type="button" class="btn btn-info"><i class="fas fa-comment"></i><span>Comment</span></button></div></div>';
                                 c++;
                             }
