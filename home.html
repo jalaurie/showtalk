@@ -62,7 +62,11 @@
                     </div>
                 </nav>
                 <div class="bg">
-                    <div class="reel" id="timeln">
+                    <div class="reel">
+                        <h4>Status Updates:</h4>
+                        <div id="timeln">
+                        </div>
+                        <div style="text-align:center;">You've reached the bottom.</div>
                     </div>
                 </div>
             </div>
@@ -101,16 +105,15 @@
                 db.collection('status').orderBy('time', 'desc').onSnapshot(function(snapshot) {
                     var content = '';
                     document.getElementById('timeln').innerHTML = '';
-                    $('#timeln').append('<h4>Status Updates:</h4>');
                     db.collection('user').doc(uid).get().then(function(userdoc) {
                         var f = userdoc.data().following;
                         var c = 1;
                         snapshot.forEach(function(doc) {
                             if(f.includes(doc.data().uid)) { //append if the user is following them
-                                content += '<div class="card" onclick="viewStatus(`'+doc.id+'`)"><div class="card-body">';
+                                content += '<div class="card"><div class="card-body">';
                                 content += '<h5 class="card-title" id="fixme'+c+'"></h5>';
                                 replaceFixMe(uid, doc.data().uid, c);
-                                content += '<p class="card-text">' + doc.data().time.toDate() + '<br><br>' + doc.data().text + '</p>';
+                                content += '<p class="card-text" onclick="viewStatus(`'+doc.id+'`)">' + doc.data().time.toDate() + '<br><br>' + doc.data().text + '</p>';
                                 content += '<button type="button" class="btn btn-info"><i class="fas fa-comment"></i><span>Comment</span></button></div></div>';
                                 c++;
                             }
@@ -118,7 +121,6 @@
                         $('#timeln').append(content);
                     });
                 });
-                // $('#timeln').append(`<div style="text-align:center;">You've reached the bottom.</div>`);
             }
 
             function viewStatus(sid) {

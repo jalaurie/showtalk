@@ -17,7 +17,7 @@
 
         <title>Show Talk</title>
     </head>
-    <body onload="checkUser()">
+    <body onload="checkUserForFriendProfile()">
         <div class="wrapper">
             <!-- Sidebar -->
             <nav id="sidebar">
@@ -61,10 +61,10 @@
                 </nav>
 
                 <div id="profileHeader">
-                    <img id="profPic" src="https://firebasestorage.googleapis.com/v0/b/show-talk.appspot.com/o/profiles%2Fdefault.jpg?alt=media&token=b42938fb-1ead-4c09-83ee-34a8d92df784" alt="Profile Picture" width="120" height="120">
-                    <div id="profInfo">
-                        <h2 id="profName"></h2>
-                        <h3 id="profUser">@</h3>
+                    <img id="fprofPic" src="https://firebasestorage.googleapis.com/v0/b/show-talk.appspot.com/o/profiles%2Fdefault.jpg?alt=media&token=b42938fb-1ead-4c09-83ee-34a8d92df784" alt="Profile Picture" width="120" height="120">
+                    <div id="fprofInfo">
+                        <h2 id="fprofName"></h2>
+                        <h3 id="fprofUser">@</h3>
                         <button type="button" id="follow" class="btn btn-info">
                             <i class="fas fa-plus"></i>
                             <span>Follow</span>
@@ -75,32 +75,11 @@
 
                 <h3>Lists</h3>
                 <div id="carousel" class="carousel slide" data-interval="false" data-ride="carousel" data-wrap="false">
-                    <div class="carousel-inner">
+                    <div class="carousel-inner" id="apL">
                         <div class="carousel-item active">
                             <div class="card">
                                 <div class="card-body carouselCardBody">
-                                    <h5 class="card-title">Favorite Movies</h5>
-                                    <ul>
-                                        <li>Pirates of the Caribbean: The Curse of the Black Pearl</li>
-                                        <li>Mean Girls</li>
-                                        <li>21 Jump Street</li>
-                                        <li>...</li> <!--If count > 3 or something add this-->
-                                    </ul>
-                                    View this list
-                                </div>
-                            </div>
-                        </div>
-                        <div class="carousel-item">
-                            <div class="card">
-                                <div class="card-body carouselCardBody">
-                                    <h5 class="card-title">Musicals</h5>
-                                    <ul>
-                                        <li>Cats</li>
-                                        <li>Les Miserables</li>
-                                        <li>Legally Blonde</li>
-                                        <li>...</li> <!--If count > 3 or something add this-->
-                                    </ul>
-                                    View this list
+                                    <h5 class="card-title">No Lists Yet!</h5>
                                 </div>
                             </div>
                         </div>
@@ -114,25 +93,19 @@
                         <span class="sr-only">Next</span>
                     </a>
                 </div>
-                <p>View all lists</p>
-                <br> 
+                <button type="button" id="seeFLists" class="btn btn-info">
+                    <i class="fas fa-list-ul"></i>
+                    <span>View All Lists</span>
+                </button>
+                <br><br>
                 <h3>Recent Status Updates</h3>
                 <div id="carousel2" class="carousel slide" data-interval="false" data-ride="carousel" data-wrap="false">
-                    <div class="carousel-inner">
+                    <div class="carousel-inner" id="apSU">
                         <div class="carousel-item active">
                             <div class="card">
                                 <div class="card-body carouselCardBody">
                                     <p class="card-text">
-                                        I just started watching Veronica Mars. It's so good!
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="carousel-item">
-                            <div class="card">
-                                <div class="card-body carouselCardBody">
-                                    <p class="card-text">
-                                        Another status update.
+                                        No status updates yet!
                                     </p>
                                 </div>
                             </div>
@@ -147,7 +120,11 @@
                         <span class="sr-only">Next</span>
                     </a>
                 </div>
-                <p>View all status updates</p>
+                <button type="button" id="seeFUpdates" class="btn btn-info">
+                    <i class="fas fa-film"></i>
+                    <span>View All Status Updates</span>
+                </button>
+                <br><br><br>
             </div>
         </div>
 
@@ -168,5 +145,103 @@
 
         <!-- Custom Script -->
         <script src="script.js"></script>
+
+        <!-- Friend Profile Script -->
+        <script>
+            var fid = getIDfromURL();
+
+            $('#seeFLists').on('click', function() {
+                window.location.href = "lists.html?uid=" + fid;
+            });
+                
+            $('#seeFUpdates').on('click', function() {
+                window.location.href = "updates.html?uid=" + fid;
+            });
+
+            //check login state and load profile info
+            function checkUserForFriendProfile() {
+                auth.onAuthStateChanged(function(user) {
+                    if (user) { // User is signed in.
+                        uid = user.uid;
+
+                        //get profile picture if it exists
+                        var picsRef = storageRef.child('profiles');
+                        var curRef = picsRef.child(fid);
+                        curRef.getDownloadURL().then(function(url) {
+                            document.getElementById('fprofPic').src = url;
+                        }).catch(function(error) { //picture doesn't exist
+                            console.log(error);
+                        });
+
+                        //load profile information
+                        var userRef = db.collection('user').doc(fid);
+                        userRef.get().then(function(doc) {
+                            if (doc.exists) {
+                            document.getElementById('fprofName').innerText = doc.data().displayname;
+                            document.getElementById('fprofUser').innerText += doc.data().username;
+                            } else {
+                                console.log("No such document!");
+                            }
+                        }).catch(function(error) {
+                            console.log("Error getting document: ", error);
+                        });
+
+                        //get the user's lists
+                        var lists = db.collection('list').where('uid', '==', fid);
+                        lists.get().then(function(snapshot) {
+                            var content = "";
+                            var count = true;
+                            snapshot.forEach(function(doc) {
+                                if(count) { //make first card active
+                                    content += '<div class="carousel-item active">';
+                                    count = false;
+                                }
+                                else {
+                                    content += '<div class="carousel-item">';
+                                }
+                                content += '<div class="card"><div class="card-body carouselCardBody">';
+                                content += '<h5 class="card-title">' + doc.data().lname + '</h5>'
+                                content += '<ul>';
+                                var arr = doc.data().items;
+                                for(var i=0; i<arr.length; i++) {
+                                    content += '<li>' + arr[i] + '</li>';
+                                }
+                                content += '</ul></div></div></div>';
+                            });
+                            if(content != "") {
+                                document.getElementById('apL').innerHTML = content;
+                            }
+                        });
+
+                        //get the user's 5 most recent status updates
+                        var s = db.collection('status').where('uid', '==', fid).limit(5);
+                        s.get().then(function(snapshot) {
+                            var content = "";
+                            var count = true;
+                            snapshot.forEach(function(doc) {
+                                if(count) { //make first card active
+                                    content += '<div class="carousel-item active">';
+                                    count = false;
+                                }
+                                else {
+                                    content += '<div class="carousel-item">';
+                                }
+                                content += '<div class="card"><div class="card-body carouselCardBody"><p class="card-text">';
+                                content += doc.data().time.toDate() + '<br><br>' + doc.data().text;
+                                content += '</p></div></div></div>';
+                                
+                            });
+                            if(content != "") {
+                                document.getElementById('apSU').innerHTML = content;
+                            }
+                        });
+
+                    } else { // User is not signed in.
+                        window.alert("You are signed out!");
+                        window.location.href = 'index.html';
+                    }
+                });
+            }
+        </script>
     </body>
 </html>

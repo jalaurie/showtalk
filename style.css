@@ -10,10 +10,12 @@
     h1 {
         font-size: 3rem !important;
     }
-    #profInfo h2 {
+    #profInfo h2,
+    #fprofInfo h2 {
         font-size: 3.5vw !important;
     }
-    #profInfo h3 {
+    #profInfo h3,
+    #fprofInfo h3 {
         font-size: 2.5vw !important;
     }
     /* Change width of login card */
@@ -63,19 +65,23 @@ h1 {
     overflow-y: scroll;
 }
 
-/* Profile Styling */
-#profileHeader {
+/* Profile, Friend Profile Styling */
+#profileHeader,
+#fprofileHeader {
     display: flex;
     padding-left: 10px;
 }
-#profInfo {
+#profInfo,
+#fprofInfo {
     padding-left: 20px;
 }
-#profInfo h2 {
+#profInfo h2,
+#fprofInfo h2 {
     font-family: 'Lobster', cursive;
     font-size: 7vw;
 }
-#profInfo h3 {
+#profInfo h3,
+#fprofInfo h3 {
     font-family: 'Zilla Slab', serif;
     font-size: 5vw;
 }

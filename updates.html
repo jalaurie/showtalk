@@ -121,7 +121,6 @@
 
                 if(pageID != uid) {
                     $('.createUpdate').remove();
-                    $('.delUpdate').remove();
                 }
             }
 
@@ -135,7 +134,8 @@
                     content += '<p class="card-text">';
                     content += doc.data().time.toDate() + '<br><br>' + doc.data().text;
                     content += '</p>';
-                    content += '<button type="button" class="delUpdate btn btn-info" onclick="deleteme(`' + doc.id + '`)"><i class="fas fa-minus-circle"></i><span>Delete Update</span></button></div></div>';
+                    if(uid == pageID) //don't add delete button otherwise
+                        content += '<button type="button" class="delUpdate btn btn-info" onclick="deleteme(`' + doc.id + '`)"><i class="fas fa-minus-circle"></i><span>Delete Update</span></button></div></div>';
                 });
                 document.getElementById('statuses').innerHTML += content;
             });
