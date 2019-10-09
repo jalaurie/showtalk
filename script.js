@@ -82,7 +82,9 @@ function checkUserForProfile() {
                     }
                     content += '</ul></div></div></div>';
                 });
-                document.getElementById('carouselLists').innerHTML = content;
+                if(content != "") {
+                    document.getElementById('carouselLists').innerHTML = content;
+                }
             });
 
             //get the user's 5 most recent status updates
@@ -103,7 +105,9 @@ function checkUserForProfile() {
                     content += '</p></div></div></div>';
                     
                 });
-                document.getElementById('carouselStatuses').innerHTML = content;
+                if(content != "") {
+                    document.getElementById('carouselStatuses').innerHTML = content;
+                }
             });
 
         } else { // User is not signed in.
