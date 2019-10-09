@@ -111,7 +111,8 @@
                             await db.collection('user').doc(user.uid).set({
                                 email: user.email,
                                 username: name,
-                                displayname: name
+                                displayname: name,
+                                following: [user.uid]
                             }).then(function() {
                                 console.log("Document created!");
                             }).catch(function(error) {
