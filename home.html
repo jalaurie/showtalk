@@ -62,31 +62,7 @@
                     </div>
                 </nav>
                 <div class="bg">
-                    <div class="reel">
-                        <h4>Status Updates:</h4>
-                        
-                        <div class="card"> <!--Link to user profile onclick-->
-                            <div class="card-body">
-                                <h5 class="card-title">Jennifer Lauriello @jalaurie</h5>
-                                <p class="card-text">I just started watching Veronica Mars. It's so good!</p>
-                                <button type="button" class="btn btn-info">
-                                    <i class="fas fa-comment"></i>
-                                    <span>Comment</span>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="card">
-                            <div class="card-body">
-                                <h5 class="card-title">Ally Brockwell @akbrockw</h5>
-                                <p class="card-text">Anybody have any good show suggestions?</p>
-                                <button type="button" class="btn btn-info">
-                                    <i class="fas fa-comment"></i>
-                                    <span>Comment</span>
-                                </button>
-                            </div>
-                        </div>
-                        <br>
-                        <div style="text-align:center;">You've reached the bottom.</div>
+                    <div class="reel" id="timeln">
                     </div>
                 </div>
             </div>
@@ -109,5 +85,49 @@
 
         <!-- Custom Script -->
         <script src="script.js"></script>
+
+        <!-- Home Script -->
+        <script>
+            //get current user information
+            firebase.auth().onAuthStateChanged(function(user) {
+                if (user) {
+                    var currentUser = auth.currentUser;
+                    populate(currentUser.uid);
+                }
+            });
+
+            //populate timeline
+            function populate(uid) {
+                db.collection('status').orderBy('time', 'desc').onSnapshot(function(snapshot) {
+                    var content = '';
+                    document.getElementById('timeln').innerHTML = '';
+                    $('#timeln').append('<h4>Status Updates:</h4>');
+                    db.collection('user').doc(uid).get().then(function(userdoc) {
+                        var f = userdoc.data().following;
+                        var c = 1;
+                        snapshot.forEach(function(doc) {
+                            if(f.includes(doc.data().uid)) { //append if the user is following them
+                                content += '<div class="card"><div class="card-body">';
+                                content += '<h5 class="card-title" id="fixme'+c+'"></h5>';
+                                replaceFixMe(doc.data().uid, c);
+                                content += '<p class="card-text">' + doc.data().time.toDate() + '<br><br>' + doc.data().text + '</p>';
+                                content += '<button type="button" class="btn btn-info"><i class="fas fa-comment"></i><span>Comment</span></button></div></div>';
+                                c++;
+                            }
+                        });
+                        $('#timeln').append(content);
+                    });
+                });
+                // $('#timeln').append(`<div style="text-align:center;">You've reached the bottom.</div>`);
+            }
+
+            function replaceFixMe(auid, c) {
+                db.collection('user').doc(auid).get().then(function(posterdoc) {
+                    var thisid = 'fixme' + c;
+                    document.getElementById(thisid).onclick = function() {window.location.href = 'friendprofile.html?fid=' + posterdoc.id;};
+                    document.getElementById(thisid).innerText = posterdoc.data().displayname + " @" + posterdoc.data().username;
+                });
+            }
+        </script>
     </body>
 </html>
