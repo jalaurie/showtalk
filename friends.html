@@ -97,7 +97,7 @@
                 //if the user entered a value to search for, perform the search
                 if(document.getElementById('friendname').value != "") {
                     var searchVal = document.getElementById('friendname').value.toLowerCase();
-                    document.getElementById('searchResults').innerHTML+=("<h4>Results:</h4><p>Click a user's name to visit their profile.</p><ul id='friendResults'></ul>");
+                    document.getElementById('searchResults').innerHTML=("<h4>Results:</h4><p>Click a user's name to visit their profile.</p><ul id='friendResults'></ul>");
                     db.collection('user').orderBy('username').onSnapshot(function(snapshot) {
                         snapshot.forEach(function(doc) {
                             var compareVal = doc.data().username.toLowerCase();
