@@ -175,12 +175,6 @@ $('#logout').on('click', function () {
     auth.signOut();
 });
 
-//search for a friend function
-$('#searchFriends').on('click', function() {
-    //query the database for that username
-    alert("This will allow a user to search for other users by username");
-});
-
 //sidebar functions
 $("#sidebar").mCustomScrollbar({
     theme: "minimal"

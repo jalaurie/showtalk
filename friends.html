@@ -60,21 +60,16 @@
                         </button>
                     </div>
                 </nav>
+                
+                <h3 style="text-align:center;">Search Friends by Username</h3>
                 <div id="search">
-                    <h3>Search Friends by Username</h3>
-                    <form id="searchForm">
-                        <div class="form-group" id="friends-form-group"> <!--Remember to whitelist characters allowed so no XSS-->
-                            <input class="form-control" type="text" id="uname" placeholder="user123">
-                        </div>
-                        <button type="submit" class="btn btn-info" id="searchFriends">Submit</button>
-                    </form>
+                    <div class="form-group" id="friends-form-group"> <!--Remember to whitelist characters allowed so no XSS-->
+                        <input class="form-control" type="text" id="friendname" placeholder="user123">
+                    </div>
+                    <button class="btn btn-info" id="searchFriends">Search</button> 
                 </div>
-                <h4>Results:</h4>
-                <p>Click a user's name to visit their profile.</p>
-                <ul id="friendResults">
-                    <li>user123</li>
-                    <li>user1234</li>
-                </ul>
+                <div id="searchResults">
+                </div>
             </div>
         </div>
         
@@ -95,5 +90,28 @@
 
         <!-- Custom Script -->
         <script src="script.js"></script>
+
+        <!-- Search Friends Script -->
+        <script>
+            $('#searchFriends').on('click', function() {
+                //if the user entered a value to search for, perform the search
+                if(document.getElementById('friendname').value != "") {
+                    var searchVal = document.getElementById('friendname').value.toLowerCase();
+                    document.getElementById('searchResults').innerHTML+=("<h4>Results:</h4><p>Click a user's name to visit their profile.</p><ul id='friendResults'></ul>");
+                    db.collection('user').orderBy('username').onSnapshot(function(snapshot) {
+                        snapshot.forEach(function(doc) {
+                            var compareVal = doc.data().username.toLowerCase();
+                            if((searchVal==compareVal || compareVal.includes(searchVal)) && doc.id != auth.currentUser.uid) {
+                                document.getElementById('friendResults').innerHTML+=('<li onclick=visitfriend(`'+doc.id+'`)>'+doc.data().username+'</li>');
+                            }
+                        });
+                    });
+                }
+            });
+            
+            function visitfriend(fid) {
+                window.location.href = 'friendprofile.html?fid=' + fid;
+            }
+        </script>
     </body>
 </html>

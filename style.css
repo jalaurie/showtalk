@@ -106,8 +106,6 @@ img {
 /* Find Friends Styling */
 #search {
     text-align: center;
-}
-#searchForm {
     display: flex;
     justify-content: center;
 }
