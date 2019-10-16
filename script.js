@@ -175,12 +175,6 @@ $('#logout').on('click', function () {
     auth.signOut();
 });
 
-//follow a user function
-$('#follow').on('click', function() {
-    //add following relationship to database
-    alert("This will allow a user to follow another user");
-});
-
 //search for a friend function
 $('#searchFriends').on('click', function() {
     //query the database for that username

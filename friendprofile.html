@@ -158,6 +158,28 @@
                 window.location.href = "updates.html?uid=" + fid;
             });
 
+            $('#follow').on('click', function() {
+                if(document.getElementById('follow') != null) {
+                    //add the fid to this user's following array
+                    db.collection('user').doc(auth.currentUser.uid).update({
+                        following: firebase.firestore.FieldValue.arrayUnion(fid)
+                    }).then(function() {
+                        //change follow button to following
+                        document.getElementById('follow').innerText = 'Following';
+                        document.getElementById('follow').id = 'following';
+                    });
+                }
+                else { //unfollow
+                    db.collection('user').doc(auth.currentUser.uid).update({
+                        following: firebase.firestore.FieldValue.arrayRemove(fid)
+                    }).then(function() {
+                        //change following button to follow
+                        document.getElementById('following').innerHTML = '<i class="fas fa-plus"></i>Follow';
+                        document.getElementById('following').id = 'follow';
+                    })
+                }
+            });
+
             //check login state and load profile info
             function checkUserForFriendProfile() {
                 auth.onAuthStateChanged(function(user) {
@@ -184,6 +206,18 @@
                             }
                         }).catch(function(error) {
                             console.log("Error getting document: ", error);
+                        });
+
+                        //see if current user is following this user
+                        db.collection('user').doc(uid).get().then(function(doc) {
+                            if(doc.data().following.includes(fid)) {
+                                //the user is following, so change the button
+                                document.getElementById('follow').innerText = 'Following';
+                                document.getElementById('follow').id = 'following';
+                            }
+                            else { //not following, make sure the button says 'Follow'
+                                document.getElementById('follow').innerHTML = '<i class="fas fa-plus"></i>Follow';
+                            }
                         });
 
                         //get the user's lists
