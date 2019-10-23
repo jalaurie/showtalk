@@ -60,20 +60,25 @@
                         </button>
                     </div>
                 </nav>
-                <button type="button" id="backToS" class="btn btn-primary">
+                <button type="button" id="backToF" class="btn btn-primary">
                     <i class="fas fa-arrow-left"></i>
-                    <span>Back to Statuses</span>
+                    <span>Back to Profile</span>
                 </button>
                 <br><br>
-                <div>
-                    <h2>What's on your mind?</h2>
-                    <p>Character Limit: 300</p>
-                    <div class="form-group"> <!--Remember to whitelist characters allowed so no XSS-->
-                        <textarea class="form-control" rows="5" id="newStatus" maxlength="300"></textarea>
-                    </div>
-                    <button class="btn btn-info" id="postStatus">Post Status</button>
-                    </div>
-                </div>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Following</th>
+                            <th scope="col">Followers</th>
+                        </tr>
+                    </thead>
+                    <tbody id="followTableBody">
+                        <!-- <tr id=>
+                            <td>Mark</td>
+                            <td>Otto</td>
+                        </tr> -->
+                    </tbody>
+                </table>
             </div>
         </div>
         
@@ -95,27 +100,54 @@
         <!-- Custom Script -->
         <script src="script.js"></script>
 
-        <!-- New Status Script -->
+        <!-- See Follow Script -->
         <script>
-            $('#backToS').on('click', function() {
+            uid = getIDfromURL();
+
+            //back to profile
+            $('#backToP').on('click', function() {
                 window.history.back();
             });
 
-            var userID = getIDfromURL();
+            var tableBody = document.getElementById('followTableBody');
 
-            //submit new list to database and redirect
-            $('#postStatus').on('click', function() {
-                var area = document.getElementById('newStatus').value;
-                if(area != "") { //if the status update isn't empty, post it
-                    db.collection('status').add({
-                        uid: userID,
-                        time: firebase.firestore.Timestamp.now(),
-                        text: area
-                    }).then(function() {
-                        window.alert("Status successfully posted!");
-                        window.history.back();
-                    });
+            //get following
+            db.collection('user').doc(uid).get().then(async function(doc) {
+                var farray = doc.data().following;
+                // var fnames = await getUserNames(farray);
+                // console.log(fnames);
+                var content = '';
+                for(var i=0; i<farray.length; i++) {
+                    // console.log(getUserName(farray[i]));
+                    content += '<tr><td onclick=goToProf('+ farray[i] +')>'+ getUserName(farray[i]) +'</td><td></td></tr>';
                 }
+                tableBody.innerHTML = (content);
+            });
+
+            //get usernames of following
+            function getUserName(a) {
+                var r;
+                db.collection('user').doc(a).get().then(function(doc) {
+                    r = doc.data().username;
+                });
+                console.log(r);
+                return r;
+
+                // var usernames = [];
+                // for(var i=0; i<a.length; i++) {
+                //     db.collection('user').doc(a[i]).get().then(function(doc) {
+                //         usernames.push(doc.data().username);
+                //     });
+                // }
+                // console.log(usernames);
+                // return usernames;
+            }
+
+            //get followers
+            db.collection('user').where('following', 'array-contains', uid).get().then(function(snapshot){
+                snapshot.forEach(function(doc) {
+
+                });
             });
         </script>
     </body>
