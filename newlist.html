@@ -116,7 +116,7 @@
                     var exists = false;
                     query.get().then(async function(snapshot) {
                         snapshot.forEach(function(doc) {
-                            if(doc.data().lname == document.getElementById('nlname').value) {
+                            if(doc.data().lname == sanitize(document.getElementById('nlname').value)) {
                                 exists = true;
                             }
                         });
@@ -126,7 +126,7 @@
                             window.alert("A list with that name already exists. Try again!");
                         }
                         else { //okay to continue
-                            var area = document.getElementById('nlistItems').value;
+                            var area = sanitize(document.getElementById('nlistItems').value);
                             var listitems = area.split("\n");
                             //if there's an extra newline, pop it from the array
                             if(listitems[listitems.length-1] == "") {
@@ -137,7 +137,7 @@
                             db.collection('list').add({
                                 items: listitems,
                                 uid: userID,
-                                lname: document.getElementById('nlname').value
+                                lname: sanitize(document.getElementById('nlname').value)
                             }).then(function() {
                                 window.alert("Successfully created list!");
                                 window.history.back();

@@ -82,7 +82,7 @@
                         <p>Display Name: <input class="form-control" type="text" id="setdname" placeholder="" maxlength="50"></p>
                     </div>
                 <button class="btn btn-info" id="submitSettings" onclick="changeSettings()">Submit Changes</button>
-                <div id="successAcct" class="hidden">Account information updated successfully!</div>
+                <div id="successAcct"></div>
                 </div>
             </div>
         </div>
@@ -131,6 +131,9 @@
 
             //Field Changes
             function changeSettings() {
+                //clear any existing success/fail messages
+                document.getElementById('successAcct').innerHTML = '';
+
                 //default set field to its original value
                 var newEmail = document.getElementById('setemail').placeholder;
                 var newUname = document.getElementById('setuname').placeholder;
@@ -141,40 +144,75 @@
                     newEmail = document.getElementById('setemail').value;
                 }
                 if(document.getElementById('setuname').value != "") {
-                    newUname = document.getElementById('setuname').value;
+                    newUname = sanitize(document.getElementById('setuname').value);
                 }
                 if(document.getElementById('setdname').value != "") {
-                    newDname = document.getElementById('setdname').value;
+                    newDname = sanitize(document.getElementById('setdname').value);
                 }
 
                 //update the database
                 var thisUser = db.collection('user').doc(String(uid));
                 thisUser.get().then(function(doc) {
-                    if(doc.exists) {
-                        thisUser.update({
-                            email: newEmail,
-                            username: newUname,
-                            displayname: newDname
-                        }).then(function() {
-                            if(firebase.auth().currentUser.email != newEmail) {
-                                firebase.auth().currentUser.updateEmail(newEmail).then(function() {
-                                    console.log("Email update success");
-                                }).catch(function(error) {
-                                    console.log(error);
+                    //try to update email
+                    if(firebase.auth().currentUser.email != newEmail) {
+                        firebase.auth().currentUser.updateEmail(newEmail).then(function() {
+                            console.log("Auth email update success");
+                           
+                            if(doc.exists) {
+                                thisUser.update({
+                                    email: newEmail
+                                }).then(function() {
+                                    console.log("User email updated");
+                                    //reset the form field & change placeholder
+                                    document.getElementById('setemail').value = "";
+                                    document.getElementById('setemail').placeholder = newEmail;
+                                    //show success message
+                                    document.getElementById('successAcct').innerHTML += '<p>Email successfully updated!</p>';
                                 });
                             }
-                            console.log("User information updated");
-                            //reset the form fields
-                            document.getElementById('setemail').value = "";
-                            document.getElementById('setuname').value = "";
-                            document.getElementById('setdname').value = "";
-                            //change the values of the placeholders
-                            document.getElementById('setemail').placeholder = newEmail;
-                            document.getElementById('setuname').placeholder = newUname;
-                            document.getElementById('setdname').placeholder = newDname;
-                            //show success message
-                            $('#successAcct').removeClass('hidden');
+                        }).catch(function(error) {
+                            console.log(error);
+                            if(window.alert("Invalid email format")) {
+                                document.getElementById('setemail').value = "";
+                            }
                         });
+                    }
+                    else {
+                        document.getElementById('successAcct').innerHTML += '<p>Email is the same.</p>';
+                    }
+
+                    if(doc.exists) {
+                        //update if different user names
+                        if(doc.data().username != newUname) {
+                            thisUser.update({
+                                username: newUname
+                            }).then(function() {
+                                console.log("User username updated");
+                                document.getElementById('setuname').value = "";
+                                document.getElementById('setuname').placeholder = newUname;
+                                //show success message
+                                document.getElementById('successAcct').innerHTML += '<p>Username successfully updated!</p>';
+                            })
+                        }
+                        else {
+                            document.getElementById('successAcct').innerHTML += '<p>Username is the same.</p>';
+                        }
+
+                        //update if different display names
+                        if(doc.data().displayname != newDname) {
+                            thisUser.update({
+                                displayname: newDname
+                            }).then(function() {
+                                console.log("User display name updated");
+                                document.getElementById('setdname').value = "";
+                                document.getElementById('setdname').placeholder = newDname;
+                                //show success message
+                                document.getElementById('successAcct').innerHTML += '<p>Display name successfully updated!</p>';
+                            });
+                        }
+                        else {
+                            document.getElementById('successAcct').innerHTML += '<p>Display name is the same.</p>';
+                        }
                     }
                 });
             }

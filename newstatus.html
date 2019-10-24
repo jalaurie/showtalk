@@ -105,7 +105,7 @@
 
             //submit new list to database and redirect
             $('#postStatus').on('click', function() {
-                var area = document.getElementById('newStatus').value;
+                var area = sanitize(document.getElementById('newStatus').value);
                 if(area != "") { //if the status update isn't empty, post it
                     db.collection('status').add({
                         uid: userID,

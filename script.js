@@ -189,3 +189,18 @@ $('#sidebarCollapse').on('click', function () {
     $('.collapse.in').toggleClass('in');
     $('a[aria-expanded=true]').attr('aria-expanded', 'false');
 });
+
+//input sanitization
+function sanitize(input) {
+    //source: https://stackoverflow.com/questions/2794137/sanitizing-user-input-before-adding-it-to-the-dom-in-javascript
+    const map = {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#x27;',
+        "/": '&#x2F;'
+    };
+    const reg = /[&<>"'/]/ig;
+    return input.replace(reg, (match)=>(map[match]));
+}

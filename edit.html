@@ -138,7 +138,7 @@
             //update list information
             $('#updateList').on('click', function() {
                 //get array of list items from textarea
-                var area = document.getElementById('listItems').value;
+                var area = sanitize(document.getElementById('listItems').value);
                 var listitems = area.split("\n");
 
                 //if there's an extra newline, pop it from the array
@@ -151,7 +151,7 @@
                     var listDoc = db.collection('list').doc(lid);
                     listDoc.update({
                         items: listitems,
-                        lname: document.getElementById('lname').value
+                        lname: sanitize(document.getElementById('lname').value)
                     }).then(function() {
                         console.log("List items and name successfully updated");
                         $('#successList').removeClass('hidden');

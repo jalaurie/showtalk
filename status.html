@@ -184,7 +184,7 @@
                 db.collection('comment').add({
                     uid: userid,
                     time: firebase.firestore.Timestamp.now(),
-                    text: document.getElementById('comment').value,
+                    text: sanitize(document.getElementById('comment').value),
                     stid: pageID
                 }).then(function() {
                     document.getElementById('comment').value = '';
