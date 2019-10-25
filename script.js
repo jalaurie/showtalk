@@ -204,3 +204,14 @@ function sanitize(input) {
     const reg = /[&<>"'/]/ig;
     return input.replace(reg, (match)=>(map[match]));
 }
+
+//unsanitize for safe text fields
+function unsanitize(input) {
+    input = input.replace(/&amp;/g, "&");
+    input = input.replace(/&lt;/g, "<");
+    input = input.replace(/&gt;/g, ">");
+    input = input.replace(/&quot;/g, '"');
+    input = input.replace(/&#x27;/g, "'");
+    input = input.replace(/&#x2F;/g, "/");
+    return input;
+}

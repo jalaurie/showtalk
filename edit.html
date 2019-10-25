@@ -67,12 +67,12 @@
                 <br><br>
                 <div>
                     <h2>Edit List</h2>
-                    <div class="form-group"> <!--Remember to whitelist characters allowed so no XSS-->
+                    <div class="form-group">
                         <h4>List Name: <input class="form-control" type="text" id="lname" placeholder="Invalid List"></h4>
                     </div>
                     <h4>List Items:</h4>
                     <p>Enter list items separated by a new line. To remove a list item, simply delete it.</p>
-                    <div class="form-group"> <!--Remember to whitelist characters allowed so no XSS-->
+                    <div class="form-group">
                         <textarea class="form-control" rows="5" id="listItems">No items found.</textarea>
                     </div>
                     <button class="btn btn-info" id="updateList">Update List</button>
@@ -110,8 +110,9 @@
             var lid = getIDfromURL();
 
             //populate current list information
+            //this information can safely be converted back to unsanitized b/c it goes in text fields, not HTML attributes
             db.collection('list').doc(lid).get().then(function(doc) {
-                document.getElementById('lname').placeholder = doc.data().lname;
+                document.getElementById('lname').placeholder = unsanitize(doc.data().lname);
                 var arr = doc.data().items;
                 var content = "";
                 var i;
@@ -119,7 +120,7 @@
                     content += arr[i] + "\n";
                 }
                 content += arr[i];
-                document.getElementById('listItems').value = content;
+                document.getElementById('listItems').value = unsanitize(content);
             });
 
             //delete list
