@@ -33,12 +33,16 @@
 body {
     min-width: 375px;
     padding: 5px;
-    background-color: #FFF8F2;
+    background-color: #EDEDED;
 }
 h1 {
     text-align: center;
     font-size: 1.75rem;
     font-family: 'Notable', sans-serif;
+}
+.btn-primary {
+    background-color: rgb(59, 176, 211);
+    border-color: rgb(140, 227, 233);
 }
 .btn-info {
     background-color: #4F5D75;
@@ -146,8 +150,8 @@ img {
 /* Header Styling */
 .navbar {
     padding: 15px 10px;
-    background: #BFC0C0;
-    border: 1px solid rgb(137, 138, 138);
+    background: #F0B67F;
+    border: 1px solid #E0A976;
     border-radius: 5px;
     margin-bottom: 40px;
     box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);

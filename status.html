@@ -60,10 +60,10 @@
                         </button>
                     </div>
                 </nav>
-                <button type="button" id="backToHome" class="btn btn-primary">
+                <!-- <button type="button" id="backToHome" class="btn btn-primary">
                     <i class="fas fa-arrow-left"></i>
                     <span>Back to Home</span>
-                </button>
+                </button> -->
                 <br><br>
                 <div id="popStat">
                 </div>
@@ -102,9 +102,9 @@
 
         <!-- Status Script -->
         <script>
-            $('#backToHome').on('click', function() {
-                window.history.back();
-            });
+            // $('#backToHome').on('click', function() {
+            //     window.history.back();
+            // });
 
             //get current user information
             firebase.auth().onAuthStateChanged(function(user) {
