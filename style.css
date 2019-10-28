@@ -12,11 +12,11 @@
     }
     #profInfo h2,
     #fprofInfo h2 {
-        font-size: 3.5vw !important;
+        font-size: 35px !important;
     }
     #profInfo h3,
     #fprofInfo h3 {
-        font-size: 2.5vw !important;
+        font-size: 25px !important;
     }
     /* Change width of login card */
     .loginWrapper {
