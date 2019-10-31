@@ -70,7 +70,7 @@
                     <div class="reel">
                         <div class="reel-with-button">
                             <h4 id="userUpdates">User's Updates</h4>
-                            <button type="button" id="addS" class="createUpdate btn btn-info">
+                            <button type="button" id="addS" class="createUpdate btn btn-primary">
                                 <i class="fas fa-plus-circle"></i>
                                 <span>Add a Status Update</span>
                             </button>
@@ -141,7 +141,7 @@
                         content += d.toLocaleString() + '<br><br>' + doc.data().text;
                         content += '</p>';
                         if(uid == pageID) //don't add delete button otherwise
-                            content += '<button type="button" class="delUpdate btn btn-info" onclick="deleteme(`' + doc.id + '`)"><i class="fas fa-minus-circle"></i><span>Delete Update</span></button>';
+                            content += '<button type="button" class="delUpdate btn btn-primary" onclick="deleteme(`' + doc.id + '`)"><i class="fas fa-minus-circle"></i><span>Delete Update</span></button>';
                         content += '</div></div>';
                     }
                 });

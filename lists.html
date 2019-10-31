@@ -70,7 +70,7 @@
                     <div id="appendLists" class="reel">
                         <div class="reel-with-button">
                             <h4 id="userLists">User's Lists</h4>
-                            <button type="button" id="nlist" class="createList btn btn-info">
+                            <button type="button" id="nlist" class="createList btn btn-primary">
                                 <i class="fas fa-plus-circle"></i>
                                 <span>Create a New List</span>
                             </button>
@@ -136,7 +136,7 @@
                         }
                         content += '</ul>';
                         if(uid == pageID) //don't add edit button otherwise
-                            content += '<button type="button" id="' + doc.id + '" class="editList btn btn-info" onclick="gotolist(`' + doc.id + '`)"><i class="fas fa-edit"></i><span>Edit List</span></button>';
+                            content += '<button type="button" id="' + doc.id + '" class="editList btn btn-primary" onclick="gotolist(`' + doc.id + '`)"><i class="fas fa-edit"></i><span>Edit List</span></button>';
                         content += '</div></div>';
                     });
                     document.getElementById('appendLists').innerHTML += content;

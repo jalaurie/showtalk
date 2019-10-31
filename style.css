@@ -33,29 +33,39 @@
 body {
     min-width: 375px;
     padding: 5px;
-    background-color: #EDEDED;
+    background-color: #E5E5E5;
 }
 h1 {
     text-align: center;
+    text-shadow: 2px 2px 5px #D2F4E8;
     font-size: 1.75rem;
     font-family: 'Notable', sans-serif;
 }
 .btn-primary {
-    background-color: rgb(59, 176, 211);
-    border-color: rgb(140, 227, 233);
+    background-color: #4B88A2;
+    border-color: #4B88A2;
+    color: white;
+}
+.btn-primary:hover {
+    background-color: #6DA4BC;
+    border-color: #6DA4BC;
+    color: white;
 }
 .btn-info {
-    background-color: #4F5D75;
-    border-color: #4F5D75;
+    background-color: #F1FFFA;
+    border-color: #F1FFFA;
+    color: black;
 }
 .btn-info:hover {
-    background-color: #697C9B;
-    border-color: #697C9B;
+    background-color: black;
+    border-color: black;
+    color: #D2F4E8;
 }
 
 /* Home Page Styling */
 .card {
     margin-bottom: 10px;
+    border: 1px solid #707070;
 }
 .reel {
     background-image: url("reel.jpg");
@@ -150,8 +160,8 @@ img {
 /* Header Styling */
 .navbar {
     padding: 15px 10px;
-    background: #F0B67F;
-    border: 1px solid #E0A976;
+    background: #5397B5;
+    border: 1px solid #4B88A2;
     border-radius: 5px;
     margin-bottom: 40px;
     box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
@@ -172,7 +182,7 @@ a:focus {
     left: -255px;
     height: 100vh;
     z-index: 999;
-    background: #EF8354;
+    background: #829399; 
     color: #fff;
     transition: all 0.3s;
     overflow-y: scroll;
@@ -186,7 +196,7 @@ a:focus {
     height: 35px;
     line-height: 35px;
     text-align: center;
-    background: #EF8354;
+    background: #829399;
     position: absolute;
     top: 10px;
     right: 10px;
@@ -197,15 +207,16 @@ a:focus {
 }
 #dismiss:hover {
     background: #fff;
-    color: #EF8354;
+    color: #829399;
 }
 #sidebar .sidebar-header {
     padding: 20px;
-    background: #F4A481;
+    background: #829399; 
+    border-bottom: 1px solid #A2B7BF;
 }
 #sidebar ul.components {
     padding: 20px 0;
-    border-bottom: 1px solid #F4A481;
+    border-bottom: 1px solid #A2B7BF;
 }
 #sidebar ul p {
     color: #fff;
@@ -217,13 +228,13 @@ a:focus {
     display: block;
 }
 #sidebar ul li a:hover {
-    color: #EF8354;
+    color: #829399;
     background: #fff;
 }
 #sidebar ul li.active>a,
 a[aria-expanded="true"] {
     color: #fff;
-    background: #F4A481;
+    background: #A2B7BF;
 }
 a[data-toggle="collapse"] {
     position: relative;
@@ -238,7 +249,7 @@ a[data-toggle="collapse"] {
 ul ul a {
     font-size: 0.9em !important;
     padding-left: 30px !important;
-    background: #F4A481;
+    background:#A2B7BF;
 }
 ul.CTAs {
     padding: 20px;
