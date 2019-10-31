@@ -101,7 +101,9 @@ function checkUserForProfile() {
                         content += '<div class="carousel-item">';
                     }
                     content += '<div class="card"><div class="card-body carouselCardBody"><p class="card-text">';
-                    content += doc.data().time.toDate() + '<br><br>' + doc.data().text;
+                    var ms = doc.data().time.toMillis(); //get date in milliseconds
+                    var d = new Date(ms);
+                    content += d.toLocaleString() + '<br><br>' + doc.data().text;
                     content += '</p></div></div></div>';
                     
                 });
