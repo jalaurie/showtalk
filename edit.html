@@ -154,7 +154,8 @@
                         lname: sanitize(document.getElementById('lname').value)
                     }).then(function() {
                         console.log("List items and name successfully updated");
-                        $('#successList').removeClass('hidden');
+                        window.alert("List updated successfully!");
+                        window.history.back();
                     });
                 }
                 else { //only update the array of items

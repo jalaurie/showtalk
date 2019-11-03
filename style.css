@@ -2,7 +2,7 @@
 @import url('https://fonts.googleapis.com/css?family=Lobster|Notable|Zilla+Slab&display=swap');
 
 /*If the screen is larger than a mobile device */
-@media screen and (min-width: 600px) {
+@media screen and (min-width: 800px) {
     /* Apply a margin */
     body {
         margin: 1% 15% 0% 15%;

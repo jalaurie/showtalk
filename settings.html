@@ -145,10 +145,11 @@
                     newEmail = document.getElementById('setemail').value;
                 }
                 if(document.getElementById('setuname').value != "") {
-                    newUname = sanitize(document.getElementById('setuname').value);
+                    newUname = document.getElementById('setuname').value;
+                    newUname = newUname.replace(/\s+/g, ''); //remove any spaces
                 }
                 if(document.getElementById('setdname').value != "") {
-                    newDname = sanitize(document.getElementById('setdname').value);
+                    newDname = document.getElementById('setdname').value;
                 }
 
                 //update the database
