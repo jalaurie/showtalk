@@ -61,6 +61,10 @@ h1 {
     border-color: black;
     color: #D2F4E8;
 }
+#btnLogin,
+#forgotBtn {
+    border-color: #DDEFE8;
+}
 
 /* Home Page Styling */
 .card {
