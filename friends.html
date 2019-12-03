@@ -102,7 +102,7 @@
                         snapshot.forEach(function(doc) {
                             var compareVal = doc.data().username.toLowerCase();
                             if((searchVal==compareVal || compareVal.includes(searchVal)) && doc.id != auth.currentUser.uid) {
-                                document.getElementById('friendResults').innerHTML+=('<div class="clickableFriend"><li onclick=visitfriend(`'+doc.id+'`)>'+doc.data().username+'</li></div>');
+                                document.getElementById('friendResults').innerHTML+=('<li onclick=visitfriend(`'+doc.id+'`)><span class="clickableFriend"><p>'+doc.data().username+'</p></span></li>');
                             }
                         });
                     });
