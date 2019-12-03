@@ -136,6 +136,9 @@ img {
 #friendResults {
     list-style: none;
 }
+.clickableFriend {
+    cursor: pointer;
+}
 
 /* Status Styling */
 #apCom {
