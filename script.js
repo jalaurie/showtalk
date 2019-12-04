@@ -88,23 +88,33 @@ function checkUserForProfile() {
             });
 
             //get the user's 5 most recent status updates
-            var s = db.collection('status').where('uid', '==', uid).limit(5);
+            var s = db.collection('status').orderBy('time','desc');
+            var counter = 0;
+
+            // var s = db.collection('status').where('uid', '==', uid).limit(5);
+
             s.get().then(function(snapshot) {
                 var content = "";
                 var count = true;
                 snapshot.forEach(function(doc) {
-                    if(count) { //make first card active
-                        content += '<div class="carousel-item active">';
-                        count = false;
+
+                    if(counter < 5 && doc.data().uid == uid) {
+
+                        if(count) { //make first card active
+                            content += '<div class="carousel-item active">';
+                            count = false;
+                        }
+                        else {
+                            content += '<div class="carousel-item">';
+                        }
+                        content += '<div class="card"><div class="card-body carouselCardBody"><p class="card-text">';
+                        var ms = doc.data().time.toMillis(); //get date in milliseconds
+                        var d = new Date(ms);
+                        content += d.toLocaleString() + '<br><br>' + doc.data().text;
+                        content += '</p></div></div></div>';
+
+                        counter++;
                     }
-                    else {
-                        content += '<div class="carousel-item">';
-                    }
-                    content += '<div class="card"><div class="card-body carouselCardBody"><p class="card-text">';
-                    var ms = doc.data().time.toMillis(); //get date in milliseconds
-                    var d = new Date(ms);
-                    content += d.toLocaleString() + '<br><br>' + doc.data().text;
-                    content += '</p></div></div></div>';
                     
                 });
                 if(content != "") {
