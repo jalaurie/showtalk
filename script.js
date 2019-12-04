@@ -61,26 +61,33 @@ function checkUserForProfile() {
             });
 
             //get the user's lists
-            var lists = db.collection('list').where('uid', '==', uid);
+            // var lists = db.collection('list').where('uid', '==', uid);
+            var lists = db.collection('list').orderBy('lname', 'asc');
+            var lcount = 0;
             lists.get().then(function(snapshot) {
                 var content = "";
                 var count = true;
                 snapshot.forEach(function(doc) {
-                    if(count) { //make first card active
-                        content += '<div class="carousel-item active">';
-                        count = false;
+
+                    if(lcount < 5 && doc.data().uid == uid) {
+                        if(count) { //make first card active
+                            content += '<div class="carousel-item active">';
+                            count = false;
+                        }
+                        else {
+                            content += '<div class="carousel-item">';
+                        }
+                        content += '<div class="card"><div class="card-body carouselCardBody">';
+                        content += '<h5 class="card-title">' + doc.data().lname + '</h5>'
+                        content += '<ul>';
+                        var arr = doc.data().items;
+                        for(var i=0; i<arr.length; i++) {
+                            content += '<li>' + arr[i] + '</li>';
+                        }
+                        content += '</ul></div></div></div>';
+
+                        lcount++;
                     }
-                    else {
-                        content += '<div class="carousel-item">';
-                    }
-                    content += '<div class="card"><div class="card-body carouselCardBody">';
-                    content += '<h5 class="card-title">' + doc.data().lname + '</h5>'
-                    content += '<ul>';
-                    var arr = doc.data().items;
-                    for(var i=0; i<arr.length; i++) {
-                        content += '<li>' + arr[i] + '</li>';
-                    }
-                    content += '</ul></div></div></div>';
                 });
                 if(content != "") {
                     document.getElementById('carouselLists').innerHTML = content;

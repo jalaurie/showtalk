@@ -122,22 +122,25 @@
                 });
 
                 //get the user's lists
-                var lists = db.collection('list').where('uid', '==', pageID);
+                // var lists = db.collection('list').where('uid', '==', pageID);
+                var lists = db.collection('list').orderBy('lname', 'asc');
                 lists.get().then(function(snapshot) {
                     var content = "";
                     snapshot.forEach(function(doc) {
-                        content += '<div class="card">';
-                        content += '<div class="card-body">';
-                        content += '<h5 class="card-title">' + doc.data().lname + '</h5>';
-                        content += '<ul>';
-                        var arr = doc.data().items;
-                        for(var i=0; i < arr.length; i++) {
-                            content += '<li>' + arr[i] + '</li>';
+                        if(doc.data().uid == pageID) {
+                            content += '<div class="card">';
+                            content += '<div class="card-body">';
+                            content += '<h5 class="card-title">' + doc.data().lname + '</h5>';
+                            content += '<ul>';
+                            var arr = doc.data().items;
+                            for(var i=0; i < arr.length; i++) {
+                                content += '<li>' + arr[i] + '</li>';
+                            }
+                            content += '</ul>';
+                            if(uid == pageID) //don't add edit button otherwise
+                                content += '<button type="button" id="' + doc.id + '" class="editList btn btn-primary" onclick="gotolist(`' + doc.id + '`)"><i class="fas fa-edit"></i><span>Edit List</span></button>';
+                            content += '</div></div>';
                         }
-                        content += '</ul>';
-                        if(uid == pageID) //don't add edit button otherwise
-                            content += '<button type="button" id="' + doc.id + '" class="editList btn btn-primary" onclick="gotolist(`' + doc.id + '`)"><i class="fas fa-edit"></i><span>Edit List</span></button>';
-                        content += '</div></div>';
                     });
                     document.getElementById('appendLists').innerHTML += content;
                 });
